@@ -20,7 +20,7 @@
       --gold-primary: #b69145;
       --gold-deep: #96722c;
       --gold-light: #e4c988;
-      --gold-glow: rgba(235, 202, 124, 0.9);
+      --gold-glow: rgba(255, 218, 128, 0.95);
       --ink-dark: #3a322a;
       --ink-muted: #73685b;
       --border-soft: rgba(182, 145, 69, 0.32);
@@ -55,7 +55,10 @@
     }
 
     /* =========================================================================
-       STAGE 1: ENVELOPE 3D ESCULPIDO EM GESSO (SEM RECORTE DUPLICADO NO SELO)
+       STAGE 1: ENVELOPE 3D COM SUSPENSE CINEMATOGRÁFICO
+       Fase 1: Selo acende devagar e luz dourada percorre as frestas
+       Fase 2: Selo se desfaz e aba superior abre lentamente em 3D
+       Fase 3: Interior escuro vai clareando gradualmente revelando o convite
        ========================================================================= */
     #envelope-stage {
       position: fixed;
@@ -66,10 +69,34 @@
       align-items: center;
       justify-content: center;
       padding: 16px;
-      background: radial-gradient(circle at center, #f7f2e8 0%, #dfd5c5 100%);
-      transition: opacity 0.95s cubic-bezier(0.4, 0, 0.2, 1),
-                  transform 0.95s cubic-bezier(0.4, 0, 0.2, 1),
-                  visibility 0.95s ease;
+      background: radial-gradient(circle at center, #f6f1e6 0%, #dcd1bf 100%);
+      transition: opacity 1.1s cubic-bezier(0.4, 0, 0.2, 1),
+                  transform 1.1s cubic-bezier(0.4, 0, 0.2, 1),
+                  visibility 1.1s ease;
+    }
+
+    /* Penumbra dramática que envolve o ambiente quando o selo começa a acender */
+    .stage-dimmer {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1001;
+      background: radial-gradient(
+        circle at 50% 48%,
+        rgba(32, 24, 15, 0.08) 0%,
+        rgba(24, 18, 11, 0.52) 100%
+      );
+      opacity: 0;
+      transition: opacity 1.2s ease;
+    }
+
+    #envelope-stage.igniting .stage-dimmer {
+      opacity: 1;
+    }
+
+    #envelope-stage.illuminating .stage-dimmer {
+      opacity: 0.22;
+      transition: opacity 1.6s ease;
     }
 
     #envelope-stage.fade-out {
@@ -90,6 +117,7 @@
 
     .envelope-wrapper {
       position: relative;
+      z-index: 1005;
       width: min(88vw, 390px);
       aspect-ratio: 704 / 1520;
       max-height: 82dvh;
@@ -100,54 +128,102 @@
       box-shadow:
         0 28px 65px rgba(45, 38, 30, 0.26),
         0 6px 18px rgba(45, 38, 30, 0.14);
-      transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+      transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1),
+                  box-shadow 1.2s ease;
     }
 
-    .envelope-wrapper:active {
-      transform: scale(0.992);
-    }
-
-    #envelope-stage.opening .envelope-wrapper {
+    #envelope-stage.igniting .envelope-wrapper {
       cursor: default;
-      transform: translateY(14px) scale(1.02);
+      box-shadow:
+        0 34px 80px rgba(20, 15, 10, 0.45),
+        0 0 36px rgba(235, 195, 105, 0.28);
     }
 
-    /* Cavidade interna do envelope + Cartão que desliza para cima ao abrir */
+    #envelope-stage.unsealing .envelope-wrapper {
+      transform: translateY(16px) scale(1.02);
+    }
+
+    /* =========================================================================
+       CAVIDADE INTERNA: COMEÇA ESCURA E CLAREIA LENTAMENTE AO ABRIR
+       ========================================================================= */
     .env-cavity {
       position: absolute;
       inset: 1px;
       border-radius: 11px;
       background:
-        radial-gradient(circle at 50% 28%, #fffdf8 0%, #ebe1cf 72%, #ddd0ba 100%);
+        radial-gradient(circle at 50% 24%, #fffef9 0%, #efe5d3 65%, #dfd1ba 100%);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: flex-start;
-      padding-top: 22%;
+      padding-top: 21%;
       text-align: center;
       overflow: hidden;
-      box-shadow: inset 0 18px 36px rgba(72, 58, 40, 0.24);
     }
 
+    /* Véu escuro interno (sombra profunda dentro do envelope fechado) */
+    .cavity-darkness {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      pointer-events: none;
+      background: radial-gradient(
+        ellipse at 50% 15%,
+        rgba(28, 22, 16, 0.92) 0%,
+        rgba(16, 12, 9, 0.99) 70%
+      );
+      opacity: 1;
+      transition: opacity 2.1s cubic-bezier(0.25, 0.1, 0.25, 1);
+    }
+
+    #envelope-stage.illuminating .cavity-darkness {
+      opacity: 0;
+    }
+
+    /* Feixe de luz dourada que desce iluminando o interior conforme a aba abre */
+    .cavity-light-beam {
+      position: absolute;
+      inset: 0;
+      z-index: 4;
+      pointer-events: none;
+      background: radial-gradient(
+        ellipse at 50% 6%,
+        rgba(255, 236, 179, 0.75) 0%,
+        rgba(255, 224, 140, 0.28) 45%,
+        rgba(255, 224, 140, 0) 78%
+      );
+      opacity: 0;
+      transform: translateY(-18%) scaleY(0.7);
+      transition: opacity 1.8s ease 0.2s, transform 2s cubic-bezier(0.22, 1, 0.36, 1) 0.2s;
+    }
+
+    #envelope-stage.illuminating .cavity-light-beam {
+      opacity: 1;
+      transform: translateY(0%) scaleY(1);
+    }
+
+    /* Cartão interno que emerge da penumbra para a luz */
     .env-cavity-card {
+      position: relative;
+      z-index: 2;
       width: 84%;
       padding: 24px 16px 26px;
-      border: 1px solid rgba(182, 145, 69, 0.5);
-      background: linear-gradient(180deg, #fffdf9 0%, #f8f2e7 100%);
+      border: 1px solid rgba(182, 145, 69, 0.52);
+      background: linear-gradient(180deg, #fffdf9 0%, #f7f0e3 100%);
       border-radius: 8px;
       box-shadow:
-        0 14px 32px rgba(58, 50, 42, 0.14),
+        0 14px 32px rgba(34, 26, 18, 0.22),
         inset 0 0 0 4px rgba(255, 253, 249, 0.85),
-        inset 0 0 0 5px rgba(182, 145, 69, 0.22);
-      transform: translateY(34%) scale(0.92);
-      opacity: 0;
-      transition: transform 1.05s cubic-bezier(0.22, 1, 0.36, 1) 0.45s,
-                  opacity 0.75s ease 0.45s;
+        inset 0 0 0 5px rgba(182, 145, 69, 0.24);
+      transform: translateY(44%) scale(0.92);
+      filter: brightness(0.35);
+      transition: transform 1.85s cubic-bezier(0.22, 1, 0.36, 1) 0.15s,
+                  filter 1.95s ease 0.15s;
     }
 
-    #envelope-stage.opening .env-cavity-card {
-      transform: translateY(-16%) scale(1.02);
-      opacity: 1;
+    #envelope-stage.illuminating .env-cavity-card {
+      transform: translateY(-15%) scale(1.02);
+      filter: brightness(1.03);
     }
 
     .env-cavity-card span {
@@ -189,49 +265,49 @@
 
     /* Aba Inferior */
     .flap-bottom {
-      z-index: 4;
+      z-index: 5;
       clip-path: polygon(0% 93%, 50% 50%, 100% 93%, 100% 100%, 0% 100%);
       filter: drop-shadow(0 -3px 7px rgba(52, 43, 32, 0.14));
     }
 
-    /* Abas Laterais com leve abertura elástica */
+    /* Abas Laterais */
     .flap-left {
-      z-index: 3;
+      z-index: 4;
       transform-origin: left center;
       clip-path: polygon(0% 0%, 0% 7%, 50% 50%, 0% 93%, 0% 100%);
       filter: drop-shadow(2px 0 5px rgba(52, 43, 32, 0.12));
-      transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.15s;
+      transition: transform 1.4s cubic-bezier(0.22, 1, 0.36, 1) 0.2s;
     }
 
     .flap-right {
-      z-index: 3;
+      z-index: 4;
       transform-origin: right center;
       clip-path: polygon(100% 0%, 100% 7%, 50% 50%, 100% 93%, 100% 100%);
       filter: drop-shadow(-2px 0 5px rgba(52, 43, 32, 0.12));
-      transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.15s;
+      transition: transform 1.4s cubic-bezier(0.22, 1, 0.36, 1) 0.2s;
     }
 
-    #envelope-stage.opening .flap-left {
-      transform: rotateY(-12deg);
+    #envelope-stage.unsealing .flap-left {
+      transform: rotateY(-11deg);
     }
 
-    #envelope-stage.opening .flap-right {
-      transform: rotateY(12deg);
+    #envelope-stage.unsealing .flap-right {
+      transform: rotateY(11deg);
     }
 
-    /* Aba Superior com rotação 3D realista */
+    /* Aba Superior com rotação 3D lenta e majestosa */
     .flap-top-pivot {
       position: absolute;
       inset: 0;
-      z-index: 6;
+      z-index: 7;
       transform-style: preserve-3d;
       transform-origin: 50% 4%;
-      transition: transform 1.05s cubic-bezier(0.36, 0.04, 0.2, 1),
-                  z-index 0s linear 0.48s;
+      transition: transform 1.65s cubic-bezier(0.32, 0.04, 0.2, 1),
+                  z-index 0s linear 0.72s;
       pointer-events: none;
     }
 
-    #envelope-stage.opening .flap-top-pivot {
+    #envelope-stage.unsealing .flap-top-pivot {
       transform: rotateX(178deg);
       z-index: 2;
     }
@@ -246,7 +322,7 @@
       clip-path: polygon(0% 0%, 100% 0%, 100% 7%, 50% 50%, 0% 7%);
       backface-visibility: hidden;
       -webkit-backface-visibility: hidden;
-      filter: drop-shadow(0 6px 12px rgba(45, 36, 25, 0.18));
+      filter: drop-shadow(0 6px 14px rgba(45, 36, 25, 0.22));
     }
 
     .flap-top-back {
@@ -260,22 +336,39 @@
       -webkit-backface-visibility: hidden;
     }
 
-    /* Brilho dourado alinhado APENAS aos segmentos expostos dos vincos (fora do selo) */
+    /* =========================================================================
+       LUZ DOURADA QUE ACENDE DEVAGAR DO SELO PARA AS FRESTAS
+       ========================================================================= */
     .crease-shimmer {
       position: absolute;
       inset: 0;
-      z-index: 7;
+      z-index: 8;
       pointer-events: none;
-      opacity: 0.25;
-      transition: opacity 0.45s ease, filter 0.45s ease;
+      opacity: 0.22;
+      transition: opacity 0.6s ease, filter 0.8s ease;
     }
 
-    #envelope-stage.opening .crease-shimmer {
+    .crease-line {
+      stroke-dasharray: 52;
+      stroke-dashoffset: 52;
+      transition: stroke-dashoffset 1.25s cubic-bezier(0.25, 0.1, 0.25, 1) 0.15s;
+    }
+
+    #envelope-stage.igniting .crease-shimmer {
       opacity: 1;
-      filter: drop-shadow(0 0 8px var(--gold-glow)) drop-shadow(0 0 18px rgba(255, 224, 138, 0.95));
+      filter: drop-shadow(0 0 8px var(--gold-glow)) drop-shadow(0 0 20px rgba(255, 222, 130, 0.95));
     }
 
-    /* Aura luminosa sutil sobre o selo real da imagem (sem duplicar imagem ou borda!) */
+    #envelope-stage.igniting .crease-line {
+      stroke-dashoffset: 0;
+    }
+
+    #envelope-stage.unsealing .crease-shimmer {
+      opacity: 0.45;
+      transition: opacity 0.9s ease;
+    }
+
+    /* Núcleo luminoso sobre o selo E e W que acende devagar antes da abertura */
     .seal-aura {
       position: absolute;
       top: 50%;
@@ -283,22 +376,43 @@
       width: 34%;
       aspect-ratio: 1 / 1;
       transform: translate(-50%, -50%);
-      z-index: 8;
+      z-index: 9;
       border-radius: 50%;
       pointer-events: none;
       background: radial-gradient(
         circle,
-        rgba(255, 226, 145, 0.28) 0%,
-        rgba(218, 178, 86, 0.14) 48%,
-        rgba(218, 178, 86, 0) 72%
+        rgba(255, 232, 156, 0.34) 0%,
+        rgba(222, 180, 84, 0.16) 48%,
+        rgba(222, 180, 84, 0) 74%
       );
+      box-shadow: 0 0 0 0 rgba(255, 224, 138, 0);
       animation: auraBreath 2.6s infinite ease-in-out;
-      transition: opacity 0.35s ease, transform 0.45s ease;
+      transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1),
+                  background 1.1s ease,
+                  box-shadow 1.1s ease,
+                  opacity 0.65s ease;
     }
 
-    #envelope-stage.opening .seal-aura {
+    /* Fase 1: Acendendo devagar no selo */
+    #envelope-stage.igniting .seal-aura {
+      animation: none;
+      transform: translate(-50%, -50%) scale(1.38);
+      background: radial-gradient(
+        circle,
+        rgba(255, 245, 204, 0.85) 0%,
+        rgba(255, 214, 112, 0.52) 45%,
+        rgba(222, 176, 72, 0) 76%
+      );
+      box-shadow:
+        0 0 32px 10px rgba(255, 218, 128, 0.65),
+        0 0 64px 20px rgba(235, 185, 82, 0.35);
+    }
+
+    /* Fase 2: Selo se dissipa no auge da luz para a aba abrir */
+    #envelope-stage.unsealing .seal-aura {
       opacity: 0;
-      transform: translate(-50%, -50%) scale(1.4);
+      transform: translate(-50%, -50%) scale(1.75);
+      transition: opacity 0.65s ease, transform 0.75s ease;
     }
 
     @keyframes auraBreath {
@@ -313,6 +427,8 @@
     }
 
     .seal-instruction {
+      position: relative;
+      z-index: 1005;
       margin-top: 16px;
       font-size: 0.72rem;
       letter-spacing: 0.22em;
@@ -321,11 +437,12 @@
       text-align: center;
       font-weight: 500;
       animation: fadeText 2.4s infinite ease-in-out;
-      transition: opacity 0.35s ease;
+      transition: opacity 0.45s ease;
     }
 
-    #envelope-stage.opening .seal-instruction {
+    #envelope-stage.igniting .seal-instruction {
       opacity: 0;
+      animation: none;
     }
 
     @keyframes fadeText {
@@ -345,13 +462,12 @@
       padding-bottom: 48px;
     }
 
-    /* Botão discreto no topo direito (não cobre textos nem campos do formulário!) */
     .replay-btn {
       position: absolute;
       top: 14px;
       right: 14px;
       z-index: 40;
-      background: rgba(255, 253, 249, 0.86);
+      background: rgba(255, 253, 249, 0.88);
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
       border: 1px solid rgba(182, 145, 69, 0.38);
@@ -398,7 +514,6 @@
       overflow: hidden;
     }
 
-    /* Fallback ornamental caso o usuário ainda não tenha subido capa.jpg */
     .hero-section.no-cover-img {
       min-height: auto;
       padding: 54px 20px 48px;
@@ -481,7 +596,6 @@
       line-height: 1.42;
     }
 
-    /* Banner de data travado em 3 colunas simétricas (sem quebra de linha!) */
     .date-banner {
       display: grid;
       grid-template-columns: 1fr auto 1fr;
@@ -624,7 +738,6 @@
       font-weight: 600;
     }
 
-    /* Bolso claro em tom gesso/champanhe harmonizado com a identidade */
     .letter-pocket {
       position: relative;
       z-index: 3;
@@ -675,7 +788,7 @@
     }
 
     /* =========================================================================
-       CONTAGEM REGRESSIVA (AJUSTADA PARA TELAS DE 320px–360px SEM CORTAR)
+       CONTAGEM REGRESSIVA
        ========================================================================= */
     .countdown-grid {
       display: grid;
@@ -902,7 +1015,7 @@
     }
 
     /* =========================================================================
-       FORMULÁRIO RSVP (ALINHAMENTO PERFEITO EM MOBILE)
+       FORMULÁRIO RSVP
        ========================================================================= */
     .rsvp-form {
       text-align: left;
@@ -1056,14 +1169,17 @@
 <body class="envelope-locked">
 
   <!-- =======================================================================
-       STAGE 1: ENVELOPE ESCULPIDO EM 3D COM SELO E & W
+       STAGE 1: ENVELOPE ESCULPIDO EM 3D COM SUSPENSE DE LUZ E PENUMBRA
        ======================================================================= -->
   <div id="envelope-stage" aria-label="Envelope do convite de casamento de Ester e Wilk">
+    <div class="stage-dimmer" aria-hidden="true"></div>
     <canvas id="particles-canvas"></canvas>
 
-    <div class="envelope-wrapper" id="envelope-wrapper" role="button" tabindex="0" aria-label="Tocar no envelope para abrir o convite">
-      <!-- Cavidade interna + Cartão que sobe ao abrir -->
+    <div class="envelope-wrapper" id="envelope-wrapper" role="button" tabindex="0" aria-label="Tocar no selo para abrir o convite">
+      <!-- Cavidade interna: começa escura e vai clareando conforme a aba abre -->
       <div class="env-cavity">
+        <div class="cavity-darkness" aria-hidden="true"></div>
+        <div class="cavity-light-beam" aria-hidden="true"></div>
         <div class="env-cavity-card">
           <span>Convite de Casamento</span>
           <h2>Ester &amp; Wilk</h2>
@@ -1082,29 +1198,28 @@
         <div class="flap-top-back"></div>
       </div>
 
-      <!-- Brilho dourado apenas nos trechos visíveis das dobras (fora do selo) -->
+      <!-- Frestas que acendem do centro (selo) para fora -->
       <svg class="crease-shimmer" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
         <defs>
-          <linearGradient id="goldCreaseTop" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#f7e39c" stop-opacity="0.15" />
-            <stop offset="60%" stop-color="#ffd966" stop-opacity="0.95" />
-            <stop offset="100%" stop-color="#fff0b3" stop-opacity="1" />
+          <linearGradient id="goldCreaseTop" x1="50%" y1="50%" x2="0%" y2="0%">
+            <stop offset="0%" stop-color="#fff4c2" stop-opacity="1" />
+            <stop offset="55%" stop-color="#ffd966" stop-opacity="0.9" />
+            <stop offset="100%" stop-color="#f7e39c" stop-opacity="0.15" />
           </linearGradient>
-          <linearGradient id="goldCreaseBottom" x1="0%" y1="100%" x2="100%" y2="0%">
-            <stop offset="0%" stop-color="#f7e39c" stop-opacity="0.15" />
-            <stop offset="60%" stop-color="#ffd966" stop-opacity="0.85" />
-            <stop offset="100%" stop-color="#fff0b3" stop-opacity="0.95" />
+          <linearGradient id="goldCreaseBottom" x1="50%" y1="50%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#fff4c2" stop-opacity="0.95" />
+            <stop offset="55%" stop-color="#ffd966" stop-opacity="0.8" />
+            <stop offset="100%" stop-color="#f7e39c" stop-opacity="0.1" />
           </linearGradient>
         </defs>
-        <!-- Trechos diagonais superiores parando antes do selo -->
-        <line x1="4" y1="7" x2="39" y2="41" stroke="url(#goldCreaseTop)" stroke-width="0.6" stroke-linecap="round" />
-        <line x1="96" y1="7" x2="61" y2="41" stroke="url(#goldCreaseTop)" stroke-width="0.6" stroke-linecap="round" />
-        <!-- Trechos diagonais inferiores parando antes do selo -->
-        <line x1="4" y1="93" x2="39" y2="59" stroke="url(#goldCreaseBottom)" stroke-width="0.5" stroke-linecap="round" />
-        <line x1="96" y1="93" x2="61" y2="59" stroke="url(#goldCreaseBottom)" stroke-width="0.5" stroke-linecap="round" />
+        <!-- Traçados partindo do selo (39,41 / 61,41) em direção às bordas (4,7 / 96,7) -->
+        <line class="crease-line" x1="39" y1="41" x2="4" y2="7" stroke="url(#goldCreaseTop)" stroke-width="0.65" stroke-linecap="round" />
+        <line class="crease-line" x1="61" y1="41" x2="96" y2="7" stroke="url(#goldCreaseTop)" stroke-width="0.65" stroke-linecap="round" />
+        <line class="crease-line" x1="39" y1="59" x2="4" y2="93" stroke="url(#goldCreaseBottom)" stroke-width="0.5" stroke-linecap="round" />
+        <line class="crease-line" x1="61" y1="59" x2="96" y2="93" stroke="url(#goldCreaseBottom)" stroke-width="0.5" stroke-linecap="round" />
       </svg>
 
-      <!-- Aura luminosa sutil sobre o selo real E e W -->
+      <!-- Aura luminosa no selo E e W que acende devagar antes de abrir -->
       <div class="seal-aura" aria-hidden="true"></div>
     </div>
 
@@ -1115,7 +1230,6 @@
        STAGE 2: CONTEÚDO COMPLETO DO CONVITE
        ======================================================================= -->
   <main id="invitation-main">
-    <!-- Botão discreto no topo direito (zero sobreposição com formulários) -->
     <button type="button" class="replay-btn" id="replay-envelope-btn" title="Ver abertura do envelope">
       &#9993; Envelope
     </button>
@@ -1442,7 +1556,7 @@
     }
 
     /* =========================================================================
-       2. PARTÍCULAS DOURADAS + COREOGRAFIA 3D DO ENVELOPE
+       2. PARTÍCULAS DOURADAS + COREOGRAFIA DE SUSPENSE DO ENVELOPE
        ========================================================================= */
     const envelopeStage = document.getElementById('envelope-stage');
     const envelopeWrapper = document.getElementById('envelope-wrapper');
@@ -1453,6 +1567,7 @@
 
     let particles = [];
     let animFrameId = null;
+    let sequenceTimers = [];
 
     function resizeCanvas() {
       canvas.width = window.innerWidth;
@@ -1461,66 +1576,90 @@
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
 
-    function spawnGoldParticles(originX, originY) {
-      particles = [];
+    function spawnGoldParticles(originX, originY, count, speedScale) {
       const colors = ['#ffd966', '#f3d47c', '#fff4cc', '#d4af37', '#e6c36a'];
-      for (let i = 0; i < 72; i++) {
+      for (let i = 0; i < count; i++) {
         const angle = Math.random() * Math.PI * 2;
-        const speed = 1.2 + Math.random() * 4.4;
+        const speed = (0.5 + Math.random() * 2.6) * speedScale;
         particles.push({
-          x: originX,
-          y: originY,
+          x: originX + (Math.random() - 0.5) * 24,
+          y: originY + (Math.random() - 0.5) * 24,
           vx: Math.cos(angle) * speed,
-          vy: Math.sin(angle) * speed - 1.3,
-          size: 1.6 + Math.random() * 3.2,
-          alpha: 1,
-          decay: 0.01 + Math.random() * 0.013,
+          vy: Math.sin(angle) * speed - 0.9,
+          size: 1.4 + Math.random() * 2.8,
+          alpha: 0.95,
+          decay: 0.007 + Math.random() * 0.009,
           color: colors[Math.floor(Math.random() * colors.length)]
         });
       }
 
-      if (animFrameId) cancelAnimationFrame(animFrameId);
-      function animateParticles() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        particles.forEach((p) => {
-          p.x += p.vx;
-          p.y += p.vy;
-          p.vy += 0.03;
-          p.alpha -= p.decay;
-          if (p.alpha > 0) {
-            ctx.save();
-            ctx.globalAlpha = p.alpha;
-            ctx.fillStyle = p.color;
-            ctx.shadowBlur = 8;
-            ctx.shadowColor = '#ffd966';
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.restore();
+      if (!animFrameId) {
+        function animateParticles() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          particles.forEach((p) => {
+            p.x += p.vx;
+            p.y += p.vy;
+            p.vy -= 0.008; // flutuam suavemente para cima como poeira dourada
+            p.alpha -= p.decay;
+            if (p.alpha > 0) {
+              ctx.save();
+              ctx.globalAlpha = p.alpha;
+              ctx.fillStyle = p.color;
+              ctx.shadowBlur = 10;
+              ctx.shadowColor = '#ffd966';
+              ctx.beginPath();
+              ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+              ctx.fill();
+              ctx.restore();
+            }
+          });
+          particles = particles.filter((p) => p.alpha > 0);
+          if (particles.length > 0) {
+            animFrameId = requestAnimationFrame(animateParticles);
+          } else {
+            animFrameId = null;
           }
-        });
-        particles = particles.filter((p) => p.alpha > 0);
-        if (particles.length > 0) {
-          animFrameId = requestAnimationFrame(animateParticles);
         }
+        animateParticles();
       }
-      animateParticles();
+    }
+
+    function clearSequenceTimers() {
+      sequenceTimers.forEach((id) => clearTimeout(id));
+      sequenceTimers = [];
     }
 
     function openEnvelope() {
-      if (envelopeStage.classList.contains('opening')) return;
+      if (envelopeStage.classList.contains('igniting')) return;
+      clearSequenceTimers();
 
       const rect = envelopeWrapper.getBoundingClientRect();
-      // Dispara as partículas exatamente do centro do selo E e W
-      spawnGoldParticles(rect.left + rect.width / 2, rect.top + rect.height / 2);
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
 
-      envelopeStage.classList.add('opening');
+      // FASE 1 (0ms): Penumbra envolve a tela e o selo E & W acende devagar,
+      // espalhando luz dourada pelas frestas diagonais
+      envelopeStage.classList.add('igniting');
+      spawnGoldParticles(cx, cy, 34, 0.65);
 
-      // Aguarda a aba superior girar e o cartão interno emergir antes de revelar a capa
-      setTimeout(() => {
+      // FASE 2 (1250ms): No auge do brilho, o selo se desfaz e a aba superior
+      // começa a abrir lentamente em 3D (interior ainda escuro!)
+      sequenceTimers.push(setTimeout(() => {
+        envelopeStage.classList.add('unsealing');
+        spawnGoldParticles(cx, cy - rect.height * 0.04, 48, 1.15);
+      }, 1250));
+
+      // FASE 3 (1800ms): Conforme a aba sobe, a escuridão interna vai clareando
+      // aos poucos com um feixe dourado e o cartão emerge da sombra para a luz
+      sequenceTimers.push(setTimeout(() => {
+        envelopeStage.classList.add('illuminating');
+      }, 1800));
+
+      // FASE 4 (4150ms): Transição suave para a capa completa do convite
+      sequenceTimers.push(setTimeout(() => {
         envelopeStage.classList.add('fade-out');
         document.body.classList.remove('envelope-locked');
-      }, 1750);
+      }, 4150));
     }
 
     envelopeWrapper.addEventListener('click', openEnvelope);
@@ -1532,8 +1671,9 @@
     });
 
     function replayEnvelope() {
+      clearSequenceTimers();
       window.scrollTo({ top: 0, behavior: 'instant' });
-      envelopeStage.classList.remove('opening', 'fade-out');
+      envelopeStage.classList.remove('igniting', 'unsealing', 'illuminating', 'fade-out');
       document.body.classList.add('envelope-locked');
     }
 
@@ -1550,7 +1690,6 @@
       if (!letterShowcase || !letterCard) return;
       const rect = letterShowcase.getBoundingClientRect();
       const vh = window.innerHeight;
-      // Progresso de 0 (entrando embaixo) até 1 (centralizado na tela)
       const progress = Math.min(1, Math.max(0, (vh - rect.top) / (vh * 0.65)));
       const translateY = (1 - progress) * 58;
       letterCard.style.transform = `translateY(${translateY.toFixed(1)}px)`;
