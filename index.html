@@ -1196,6 +1196,17 @@
     .rise-letter{position:absolute;z-index:4;margin:0;pointer-events:none;border-radius:10px;overflow:hidden;opacity:0;filter:brightness(.3);transform-origin:50% 0;transform:translateY(0) scale(var(--k,.7));transition:transform 2s cubic-bezier(.18,.8,.2,1),opacity .7s ease,filter 1.8s ease;box-shadow:0 0 50px rgba(255,214,120,.55),0 10px 30px rgba(30,20,8,.4)}
     #envelope-stage.rising .rise-letter{opacity:1;filter:brightness(1.05);transform:translateY(var(--up,-200px)) scale(var(--k,.7))}
     .fly-letter{position:fixed;z-index:1040;margin:0;pointer-events:none;overflow:hidden;box-shadow:0 0 90px 10px rgba(255,214,120,.6)}
+  
+    /* =========================================================================
+       SETA SUTIL "ROLE PARA BAIXO" (aparece depois da abertura e some ao rolar)
+       ========================================================================= */
+    #scroll-cue{position:fixed;left:50%;bottom:calc(16px + env(safe-area-inset-bottom,0px));transform:translate(-50%,10px);z-index:60;display:flex;flex-direction:column;align-items:center;padding:8px 18px 7px;border:1px solid var(--border-soft);border-radius:999px;background:rgba(255,253,249,.7);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:var(--gold-deep);font-family:inherit;cursor:pointer;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .7s ease,transform .7s ease,visibility .7s}
+    #scroll-cue.show{opacity:1;visibility:visible;pointer-events:auto;transform:translate(-50%,0)}
+    #scroll-cue .cue-label{font-size:.6rem;letter-spacing:.26em;text-transform:uppercase;font-weight:600;color:var(--ink-muted)}
+    #scroll-cue svg{width:18px;height:18px;margin-top:2px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;animation:cueBob 1.9s ease-in-out infinite}
+    #scroll-cue svg+svg{margin-top:-10px;animation-delay:.22s}
+    @keyframes cueBob{0%,100%{transform:translateY(0);opacity:.3}50%{transform:translateY(5px);opacity:1}}
+    @media (prefers-reduced-motion:reduce){#scroll-cue svg{animation:none;opacity:.8}}
   </style>
 </head>
 <body class="envelope-locked">
@@ -1263,6 +1274,13 @@
   <!-- =======================================================================
        STAGE 2: CONTEÚDO COMPLETO DO CONVITE
        ======================================================================= -->
+  <!-- Seta sutil que convida a rolar a página (aparece depois da abertura) -->
+  <button type="button" id="scroll-cue" aria-label="Role para baixo para ver o convite completo">
+    <span class="cue-label">Role para baixo</span>
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8l7 7 7-7"/></svg>
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8l7 7 7-7"/></svg>
+  </button>
+
   <main id="invitation-main">
     <button type="button" class="replay-btn" id="replay-envelope-btn" title="Ver abertura do envelope">
       &#9993; Envelope
@@ -1279,7 +1297,7 @@
         </h1>
 
         <p class="hero-invite-text">
-          Convidamos você para celebrar o início da nossa nova história de amor
+          Convidam você para celebrar o início da nossa nova história de amor
         </p>
 
         <div class="date-banner">
@@ -1727,7 +1745,7 @@
       clearInterval(beam);
       envelopeStage.classList.remove('rising', 'blooming', 'boom', 'tremor');
       envelopeStage.querySelectorAll('.rise-letter, .fly-letter').forEach((n) => n.remove());
-      idleTilt = true; requestAnimationFrame(tiltLoop);
+      idleTilt = true; requestAnimationFrame(tiltLoop); hideCue();
     }
 
     function openEnvelope() {
@@ -1769,8 +1787,36 @@
       at(6000, () => {
         envelopeStage.classList.add('fade-out');
         document.body.classList.remove('envelope-locked');
+        scheduleCue();
       });
     }
+
+        /* ===== SETA "ROLE PARA BAIXO": aparece depois da abertura e some ao rolar ===== */
+    const scrollCue = document.getElementById('scroll-cue');
+    let cueTimer = null, cueDone = false;
+
+    function scheduleCue() {
+      cueDone = false;
+      clearTimeout(cueTimer);
+      cueTimer = setTimeout(() => {
+        if (!cueDone && window.scrollY < 40) scrollCue.classList.add('show');
+      }, 1800);
+    }
+
+    function hideCue() {
+      clearTimeout(cueTimer);
+      scrollCue.classList.remove('show');
+    }
+
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 40) { cueDone = true; hideCue(); }
+    }, { passive: true });
+
+    scrollCue.addEventListener('click', () => {
+      cueDone = true; hideCue();
+      const next = heroSection.nextElementSibling;
+      if (next) next.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
 
     envelopeWrapper.addEventListener('click', openEnvelope);
     envelopeWrapper.addEventListener('keydown', (e) => {
