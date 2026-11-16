@@ -6,25 +6,27 @@
   <title>Ester &amp; Wilk — 06.09.2027</title>
   <meta name="description" content="Convite de Casamento de Ester & Wilk — 06 de Setembro de 2027, às 16h, no Espaço Perfeito – Mooca." />
 
-  <!-- Tipografia Editorial & Moderna -->
+  <!-- Tipografia Editorial & Caligráfica -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Great+Vibes&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
 
   <style>
     :root {
-      --bg-linen: #ebe4d8;
+      --bg-linen: #ebe3d5;
       --bg-alabaster: #faf7f2;
-      --bg-plaster: #f2ece1;
+      --bg-plaster: #f2ebe0;
       --bg-card: #fffdf9;
-      --gold-primary: #b89446;
-      --gold-light: #dfC27d;
-      --gold-glow: rgba(223, 194, 125, 0.85);
-      --ink-dark: #3a332b;
-      --ink-muted: #74695c;
-      --border-soft: rgba(184, 148, 70, 0.28);
-      --shadow-soft: 0 18px 45px rgba(58, 51, 43, 0.12);
-      --envelope-img: url('envelope.webp');
+      --gold-primary: #b69145;
+      --gold-deep: #96722c;
+      --gold-light: #e4c988;
+      --gold-glow: rgba(235, 202, 124, 0.9);
+      --ink-dark: #3a322a;
+      --ink-muted: #73685b;
+      --border-soft: rgba(182, 145, 69, 0.32);
+      --shadow-soft: 0 18px 44px rgba(58, 50, 42, 0.1);
+      --envelope-img: url('envelope.jpg');
+      --cover-img: url('capa.jpg');
     }
 
     * {
@@ -44,7 +46,7 @@
     body {
       min-height: 100dvh;
       overflow-x: hidden;
-      background: radial-gradient(circle at 50% 20%, #f7f3eb 0%, var(--bg-linen) 100%);
+      background: radial-gradient(circle at 50% 18%, #f8f4ec 0%, var(--bg-linen) 100%);
     }
 
     body.envelope-locked {
@@ -53,7 +55,7 @@
     }
 
     /* =========================================================================
-       STAGE 1: ENVELOPE 3D ESCULPIDO EM GESSO
+       STAGE 1: ENVELOPE 3D ESCULPIDO EM GESSO (SEM RECORTE DUPLICADO NO SELO)
        ========================================================================= */
     #envelope-stage {
       position: fixed;
@@ -64,12 +66,15 @@
       align-items: center;
       justify-content: center;
       padding: 16px;
-      background: radial-gradient(circle at center, #f6f1e7 0%, #dfd6c7 100%);
-      transition: opacity 1.1s cubic-bezier(0.4, 0, 0.2, 1), visibility 1.1s ease;
+      background: radial-gradient(circle at center, #f7f2e8 0%, #dfd5c5 100%);
+      transition: opacity 0.95s cubic-bezier(0.4, 0, 0.2, 1),
+                  transform 0.95s cubic-bezier(0.4, 0, 0.2, 1),
+                  visibility 0.95s ease;
     }
 
     #envelope-stage.fade-out {
       opacity: 0;
+      transform: scale(1.06);
       visibility: hidden;
       pointer-events: none;
     }
@@ -80,89 +85,101 @@
       width: 100%;
       height: 100%;
       pointer-events: none;
-      z-index: 1020;
+      z-index: 1030;
     }
 
     .envelope-wrapper {
       position: relative;
-      width: min(90vw, 410px);
+      width: min(88vw, 390px);
       aspect-ratio: 704 / 1520;
-      max-height: 84dvh;
-      perspective: 1400px;
-      border-radius: 10px;
+      max-height: 82dvh;
+      perspective: 1600px;
+      border-radius: 12px;
+      cursor: pointer;
+      user-select: none;
       box-shadow:
-        0 28px 65px rgba(45, 38, 30, 0.28),
+        0 28px 65px rgba(45, 38, 30, 0.26),
         0 6px 18px rgba(45, 38, 30, 0.14);
-      transition: transform 1.25s cubic-bezier(0.22, 1, 0.36, 1);
+      transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .envelope-wrapper:active {
+      transform: scale(0.992);
     }
 
     #envelope-stage.opening .envelope-wrapper {
-      transform: scale(1.035);
+      cursor: default;
+      transform: translateY(14px) scale(1.02);
     }
 
-    /* Interior revelado quando a aba superior abre */
+    /* Cavidade interna do envelope + Cartão que desliza para cima ao abrir */
     .env-cavity {
       position: absolute;
-      inset: 0;
-      border-radius: 10px;
+      inset: 1px;
+      border-radius: 11px;
       background:
-        radial-gradient(circle at 50% 32%, rgba(255, 252, 245, 0.98) 0%, rgba(236, 226, 208, 0.96) 100%);
+        radial-gradient(circle at 50% 28%, #fffdf8 0%, #ebe1cf 72%, #ddd0ba 100%);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: flex-start;
-      padding-top: 17%;
+      padding-top: 22%;
       text-align: center;
       overflow: hidden;
-      box-shadow: inset 0 12px 30px rgba(82, 68, 48, 0.22);
+      box-shadow: inset 0 18px 36px rgba(72, 58, 40, 0.24);
     }
 
     .env-cavity-card {
-      width: 82%;
-      padding: 20px 14px;
-      border: 1px solid rgba(184, 148, 70, 0.45);
-      background: rgba(255, 253, 249, 0.92);
-      border-radius: 6px;
-      box-shadow: 0 8px 24px rgba(58, 51, 43, 0.08);
-      transform: translateY(12px);
-      opacity: 0.7;
-      transition: transform 1.2s ease, opacity 1.2s ease;
+      width: 84%;
+      padding: 24px 16px 26px;
+      border: 1px solid rgba(182, 145, 69, 0.5);
+      background: linear-gradient(180deg, #fffdf9 0%, #f8f2e7 100%);
+      border-radius: 8px;
+      box-shadow:
+        0 14px 32px rgba(58, 50, 42, 0.14),
+        inset 0 0 0 4px rgba(255, 253, 249, 0.85),
+        inset 0 0 0 5px rgba(182, 145, 69, 0.22);
+      transform: translateY(34%) scale(0.92);
+      opacity: 0;
+      transition: transform 1.05s cubic-bezier(0.22, 1, 0.36, 1) 0.45s,
+                  opacity 0.75s ease 0.45s;
     }
 
     #envelope-stage.opening .env-cavity-card {
-      transform: translateY(-4px);
+      transform: translateY(-16%) scale(1.02);
       opacity: 1;
     }
 
     .env-cavity-card span {
       display: block;
-      font-size: 0.65rem;
-      letter-spacing: 0.22em;
+      font-size: 0.62rem;
+      letter-spacing: 0.24em;
       text-transform: uppercase;
       color: var(--gold-primary);
-      margin-bottom: 6px;
+      font-weight: 600;
+      margin-bottom: 8px;
     }
 
     .env-cavity-card h2 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.75rem;
-      font-weight: 600;
+      font-family: 'Great Vibes', cursive;
+      font-size: 2.35rem;
+      font-weight: 400;
       color: var(--ink-dark);
-      line-height: 1.1;
+      line-height: 1.05;
     }
 
     .env-cavity-card p {
       font-size: 0.72rem;
-      letter-spacing: 0.16em;
+      letter-spacing: 0.2em;
       color: var(--ink-muted);
-      margin-top: 6px;
+      margin-top: 8px;
     }
 
-    /* Camadas recortadas da imagem única do envelope */
+    /* Camadas recortadas exatamente nos vincos físicos da arte */
     .env-flap {
       position: absolute;
       inset: 0;
-      border-radius: 10px;
+      border-radius: 12px;
       background-image: var(--envelope-img);
       background-size: 100% 100%;
       background-position: center;
@@ -172,140 +189,139 @@
 
     /* Aba Inferior */
     .flap-bottom {
-      z-index: 3;
-      clip-path: polygon(0% 100%, 50% 48%, 100% 100%);
-      filter: drop-shadow(0 -4px 8px rgba(52, 43, 32, 0.16));
+      z-index: 4;
+      clip-path: polygon(0% 93%, 50% 50%, 100% 93%, 100% 100%, 0% 100%);
+      filter: drop-shadow(0 -3px 7px rgba(52, 43, 32, 0.14));
     }
 
-    /* Abas Laterais */
+    /* Abas Laterais com leve abertura elástica */
     .flap-left {
-      z-index: 2;
-      clip-path: polygon(0% 0%, 50% 50%, 0% 100%);
-      filter: drop-shadow(3px 0 6px rgba(52, 43, 32, 0.14));
+      z-index: 3;
+      transform-origin: left center;
+      clip-path: polygon(0% 0%, 0% 7%, 50% 50%, 0% 93%, 0% 100%);
+      filter: drop-shadow(2px 0 5px rgba(52, 43, 32, 0.12));
+      transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.15s;
     }
 
     .flap-right {
-      z-index: 2;
-      clip-path: polygon(100% 0%, 50% 50%, 100% 100%);
-      filter: drop-shadow(-3px 0 6px rgba(52, 43, 32, 0.14));
+      z-index: 3;
+      transform-origin: right center;
+      clip-path: polygon(100% 0%, 100% 7%, 50% 50%, 100% 93%, 100% 100%);
+      filter: drop-shadow(-2px 0 5px rgba(52, 43, 32, 0.12));
+      transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.15s;
     }
 
-    /* Aba Superior com rotação 3D */
+    #envelope-stage.opening .flap-left {
+      transform: rotateY(-12deg);
+    }
+
+    #envelope-stage.opening .flap-right {
+      transform: rotateY(12deg);
+    }
+
+    /* Aba Superior com rotação 3D realista */
     .flap-top-pivot {
       position: absolute;
       inset: 0;
-      z-index: 5;
+      z-index: 6;
       transform-style: preserve-3d;
-      transform-origin: top center;
-      transition: transform 1.45s cubic-bezier(0.38, 0.05, 0.22, 1), z-index 0s linear 0.65s;
+      transform-origin: 50% 4%;
+      transition: transform 1.05s cubic-bezier(0.36, 0.04, 0.2, 1),
+                  z-index 0s linear 0.48s;
       pointer-events: none;
     }
 
     #envelope-stage.opening .flap-top-pivot {
       transform: rotateX(178deg);
-      z-index: 1;
+      z-index: 2;
     }
 
     .flap-top-front {
       position: absolute;
       inset: 0;
-      border-radius: 10px;
+      border-radius: 12px;
       background-image: var(--envelope-img);
       background-size: 100% 100%;
       background-position: center;
-      clip-path: polygon(0% 0%, 100% 0%, 50% 52%);
+      clip-path: polygon(0% 0%, 100% 0%, 100% 7%, 50% 50%, 0% 7%);
       backface-visibility: hidden;
       -webkit-backface-visibility: hidden;
-      filter: drop-shadow(0 6px 12px rgba(45, 36, 25, 0.22));
+      filter: drop-shadow(0 6px 12px rgba(45, 36, 25, 0.18));
     }
 
     .flap-top-back {
       position: absolute;
       inset: 0;
-      border-radius: 10px;
-      background: linear-gradient(180deg, #e8dfd0 0%, #f7f2e8 100%);
-      clip-path: polygon(0% 0%, 100% 0%, 50% 52%);
+      border-radius: 12px;
+      background: linear-gradient(180deg, #e5dac7 0%, #f5efe4 100%);
+      clip-path: polygon(0% 0%, 100% 0%, 100% 7%, 50% 50%, 0% 7%);
       transform: rotateX(180deg);
       backface-visibility: hidden;
       -webkit-backface-visibility: hidden;
     }
 
-    /* Brilho dourado nas frestas diagonais */
+    /* Brilho dourado alinhado APENAS aos segmentos expostos dos vincos (fora do selo) */
     .crease-shimmer {
       position: absolute;
       inset: 0;
-      z-index: 6;
+      z-index: 7;
       pointer-events: none;
-      opacity: 0.35;
-      transition: opacity 0.6s ease, filter 0.6s ease;
+      opacity: 0.25;
+      transition: opacity 0.45s ease, filter 0.45s ease;
     }
 
     #envelope-stage.opening .crease-shimmer {
       opacity: 1;
-      filter: drop-shadow(0 0 10px var(--gold-glow)) drop-shadow(0 0 22px rgba(255, 225, 145, 0.9));
+      filter: drop-shadow(0 0 8px var(--gold-glow)) drop-shadow(0 0 18px rgba(255, 224, 138, 0.95));
     }
 
-    /* Botão do Selo de Cera Central (recorte exato da mesma imagem) */
-    .wax-seal-btn {
+    /* Aura luminosa sutil sobre o selo real da imagem (sem duplicar imagem ou borda!) */
+    .seal-aura {
       position: absolute;
       top: 50%;
       left: 50%;
-      width: 31%;
+      width: 34%;
       aspect-ratio: 1 / 1;
       transform: translate(-50%, -50%);
-      z-index: 10;
-      border: none;
+      z-index: 8;
       border-radius: 50%;
-      cursor: pointer;
-      background-image: var(--envelope-img);
-      /* Escala e centraliza exatamente a região do selo E e W da arte */
-      background-size: 322.5% 696.5%;
-      background-position: 50% 50%;
-      box-shadow:
-        0 8px 22px rgba(48, 39, 28, 0.28),
-        0 0 0 0 rgba(212, 175, 55, 0.55);
-      animation: sealPulse 2.6s infinite ease-in-out;
-      transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.55s ease;
-    }
-
-    .wax-seal-btn:hover {
-      transform: translate(-50%, -50%) scale(1.06);
-    }
-
-    .wax-seal-btn:active {
-      transform: translate(-50%, -50%) scale(0.95);
-    }
-
-    #envelope-stage.opening .wax-seal-btn {
-      animation: none;
-      transform: translate(-50%, -50%) scale(1.18);
-      opacity: 0;
       pointer-events: none;
+      background: radial-gradient(
+        circle,
+        rgba(255, 226, 145, 0.28) 0%,
+        rgba(218, 178, 86, 0.14) 48%,
+        rgba(218, 178, 86, 0) 72%
+      );
+      animation: auraBreath 2.6s infinite ease-in-out;
+      transition: opacity 0.35s ease, transform 0.45s ease;
     }
 
-    @keyframes sealPulse {
+    #envelope-stage.opening .seal-aura {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(1.4);
+    }
+
+    @keyframes auraBreath {
       0%, 100% {
-        box-shadow:
-          0 8px 22px rgba(48, 39, 28, 0.28),
-          0 0 0 0 rgba(212, 175, 55, 0.45);
+        transform: translate(-50%, -50%) scale(0.95);
+        opacity: 0.65;
       }
       50% {
-        box-shadow:
-          0 10px 26px rgba(48, 39, 28, 0.32),
-          0 0 0 14px rgba(212, 175, 55, 0);
+        transform: translate(-50%, -50%) scale(1.12);
+        opacity: 1;
       }
     }
 
     .seal-instruction {
       margin-top: 16px;
-      font-size: 0.74rem;
-      letter-spacing: 0.2em;
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
       text-transform: uppercase;
       color: var(--ink-muted);
       text-align: center;
       font-weight: 500;
       animation: fadeText 2.4s infinite ease-in-out;
-      transition: opacity 0.4s ease;
+      transition: opacity 0.35s ease;
     }
 
     #envelope-stage.opening .seal-instruction {
@@ -321,115 +337,131 @@
        STAGE 2: PÁGINA PRINCIPAL DO CONVITE
        ========================================================================= */
     #invitation-main {
-      max-width: 540px;
+      max-width: 520px;
       margin: 0 auto;
       background-color: var(--bg-alabaster);
-      box-shadow: 0 0 60px rgba(58, 51, 43, 0.08);
+      box-shadow: 0 0 60px rgba(58, 50, 42, 0.08);
       position: relative;
-      padding-bottom: 56px;
+      padding-bottom: 48px;
     }
 
+    /* Botão discreto no topo direito (não cobre textos nem campos do formulário!) */
     .replay-btn {
-      position: fixed;
-      bottom: 18px;
-      right: 18px;
-      z-index: 90;
-      background: rgba(255, 253, 249, 0.92);
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      z-index: 40;
+      background: rgba(255, 253, 249, 0.86);
       backdrop-filter: blur(8px);
-      border: 1px solid var(--border-soft);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(182, 145, 69, 0.38);
       color: var(--ink-dark);
-      padding: 9px 14px;
+      padding: 7px 12px;
       border-radius: 999px;
-      font-size: 0.7rem;
+      font-size: 0.64rem;
+      font-weight: 600;
       letter-spacing: 0.1em;
       text-transform: uppercase;
       cursor: pointer;
-      box-shadow: 0 6px 20px rgba(58, 51, 43, 0.12);
-      display: flex;
+      box-shadow: 0 4px 14px rgba(58, 50, 42, 0.08);
+      display: inline-flex;
       align-items: center;
-      gap: 6px;
-      transition: transform 0.25s ease, border-color 0.25s ease;
+      gap: 5px;
+      transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
     }
 
     .replay-btn:hover {
-      transform: translateY(-2px);
+      transform: translateY(-1px);
       border-color: var(--gold-primary);
+      background: #ffffff;
     }
 
-    /* HERO COM MOLDURA ONDULADA & AQUARELA BOTÂNICA */
+    /* =========================================================================
+       CAPA / HERO COM MOLDURA ESCULPIDA EM RELEVO DE GESSO (capa.jpg)
+       ========================================================================= */
     .hero-section {
       position: relative;
-      padding: 26px 18px 36px;
-      background:
-        radial-gradient(circle at 20% 15%, rgba(226, 214, 192, 0.55) 0%, transparent 55%),
-        radial-gradient(circle at 85% 75%, rgba(208, 214, 198, 0.45) 0%, transparent 60%),
-        linear-gradient(180deg, #f3ede2 0%, #faf7f2 100%);
+      width: 100%;
+      min-height: min(176vw, 840px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 25% 13% 23%;
+      text-align: center;
+      background-color: #f4eee3;
+      background-image:
+        radial-gradient(circle at 50% 50%, rgba(255, 253, 248, 0.55) 0%, rgba(255, 253, 248, 0.15) 62%, transparent 100%),
+        var(--cover-img);
+      background-size: 100% 100%;
+      background-position: center;
+      background-repeat: no-repeat;
       overflow: hidden;
     }
 
-    .scalloped-frame {
-      position: relative;
-      border-radius: 28px;
-      padding: 44px 24px 48px;
-      text-align: center;
+    /* Fallback ornamental caso o usuário ainda não tenha subido capa.jpg */
+    .hero-section.no-cover-img {
+      min-height: auto;
+      padding: 54px 20px 48px;
       background:
-        radial-gradient(ellipse at 50% 0%, rgba(255, 253, 248, 0.96) 0%, rgba(246, 240, 230, 0.92) 65%, rgba(232, 223, 206, 0.88) 100%);
-      border: 1.5px solid rgba(184, 148, 70, 0.38);
-      box-shadow:
-        inset 0 0 0 6px rgba(255, 253, 249, 0.75),
-        inset 0 0 0 7px rgba(184, 148, 70, 0.25),
-        0 20px 45px rgba(58, 51, 43, 0.08);
+        radial-gradient(circle at 18% 12%, rgba(226, 214, 192, 0.6) 0%, transparent 55%),
+        radial-gradient(circle at 85% 82%, rgba(212, 216, 200, 0.5) 0%, transparent 60%),
+        linear-gradient(180deg, #f3ede2 0%, #faf7f2 100%);
     }
 
-    /* Ornamento ondulado superior e inferior em relevo suave */
-    .scallop-ornament {
+    .hero-section.no-cover-img .hero-content-box {
       width: 100%;
-      max-width: 260px;
-      height: 26px;
-      margin: 0 auto 14px;
-      color: var(--gold-primary);
-      opacity: 0.75;
+      padding: 40px 20px;
+      border-radius: 26px;
+      background: rgba(255, 253, 249, 0.92);
+      border: 1.5px solid rgba(182, 145, 69, 0.4);
+      box-shadow:
+        inset 0 0 0 6px rgba(255, 253, 249, 0.8),
+        inset 0 0 0 7px rgba(182, 145, 69, 0.25),
+        0 18px 40px rgba(58, 50, 42, 0.08);
     }
 
-    .scallop-ornament.bottom {
-      margin: 22px auto 0;
-      transform: rotate(180deg);
+    .hero-content-box {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      max-width: 340px;
     }
 
     .monogram-crest {
-      width: 68px;
-      height: 68px;
-      margin: 0 auto 18px;
+      width: 58px;
+      height: 58px;
+      margin: 0 auto 14px;
       border-radius: 50%;
-      border: 1px solid rgba(184, 148, 70, 0.5);
+      border: 1px solid rgba(182, 145, 69, 0.55);
       display: flex;
       align-items: center;
       justify-content: center;
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.45rem;
+      font-size: 1.25rem;
       font-weight: 600;
       letter-spacing: 0.06em;
-      color: var(--gold-primary);
-      background: radial-gradient(circle, #fffdf9 0%, #f3ece0 100%);
-      box-shadow: 0 6px 18px rgba(184, 148, 70, 0.14);
+      color: var(--gold-deep);
+      background: radial-gradient(circle, rgba(255, 253, 249, 0.96) 0%, rgba(243, 236, 224, 0.92) 100%);
+      box-shadow: 0 6px 18px rgba(182, 145, 69, 0.16);
     }
 
     .hero-kicker {
-      font-size: 0.72rem;
-      letter-spacing: 0.24em;
+      font-size: clamp(0.62rem, 2.5vw, 0.7rem);
+      letter-spacing: 0.2em;
       text-transform: uppercase;
       color: var(--ink-muted);
-      margin-bottom: 12px;
+      margin-bottom: 8px;
+      line-height: 1.4;
     }
 
     .couple-names {
       font-family: 'Great Vibes', cursive;
-      font-size: clamp(3.2rem, 12vw, 4.3rem);
+      font-size: clamp(2.85rem, 11.5vw, 4rem);
       font-weight: 400;
       color: var(--ink-dark);
       line-height: 1.05;
-      margin: 6px 0 12px;
-      text-shadow: 0 2px 10px rgba(184, 148, 70, 0.15);
+      margin: 4px 0 10px;
+      text-shadow: 0 2px 12px rgba(255, 253, 249, 0.9);
     }
 
     .couple-names .amp {
@@ -437,43 +469,46 @@
       font-style: italic;
       font-size: 0.68em;
       color: var(--gold-primary);
-      margin: 0 6px;
+      margin: 0 4px;
     }
 
     .hero-invite-text {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.18rem;
+      font-size: clamp(1.05rem, 4.2vw, 1.2rem);
       font-style: italic;
       color: var(--ink-muted);
-      max-width: 340px;
-      margin: 0 auto 24px;
-      line-height: 1.45;
+      margin: 0 auto 18px;
+      line-height: 1.42;
     }
 
+    /* Banner de data travado em 3 colunas simétricas (sem quebra de linha!) */
     .date-banner {
-      display: inline-flex;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
       align-items: center;
-      justify-content: center;
-      gap: 14px;
-      padding: 12px 20px;
+      width: 100%;
+      max-width: 280px;
+      margin: 0 auto 16px;
+      padding: 10px 4px;
       border-top: 1px solid var(--border-soft);
       border-bottom: 1px solid var(--border-soft);
-      margin-bottom: 18px;
     }
 
     .date-banner .side {
-      font-size: 0.72rem;
-      letter-spacing: 0.18em;
+      font-size: clamp(0.62rem, 2.6vw, 0.72rem);
+      letter-spacing: 0.14em;
       text-transform: uppercase;
       color: var(--ink-muted);
-      font-weight: 500;
+      font-weight: 600;
+      white-space: nowrap;
+      text-align: center;
     }
 
     .date-banner .day-num {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 2.3rem;
+      font-size: clamp(2rem, 8vw, 2.35rem);
       font-weight: 600;
-      color: var(--gold-primary);
+      color: var(--gold-deep);
       line-height: 1;
       padding: 0 12px;
       border-left: 1px solid var(--border-soft);
@@ -481,18 +516,18 @@
     }
 
     .hero-venue {
-      font-size: 0.82rem;
-      font-weight: 500;
-      letter-spacing: 0.14em;
+      font-size: clamp(0.72rem, 3vw, 0.8rem);
+      font-weight: 600;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--ink-dark);
-      margin-top: 4px;
+      margin-top: 2px;
     }
 
     .hero-city {
-      font-size: 0.74rem;
+      font-size: 0.7rem;
       color: var(--ink-muted);
-      letter-spacing: 0.12em;
+      letter-spacing: 0.1em;
       margin-top: 3px;
     }
 
@@ -500,18 +535,18 @@
        SEÇÕES GERAIS & REVEAL ANIMATION
        ========================================================================= */
     .section-block {
-      padding: 40px 22px;
+      padding: 36px 18px;
       position: relative;
     }
 
     .section-header {
       text-align: center;
-      margin-bottom: 26px;
+      margin-bottom: 24px;
     }
 
     .section-tag {
       display: block;
-      font-size: 0.68rem;
+      font-size: 0.66rem;
       letter-spacing: 0.24em;
       text-transform: uppercase;
       color: var(--gold-primary);
@@ -521,7 +556,7 @@
 
     .section-title {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 2rem;
+      font-size: clamp(1.75rem, 7vw, 2.05rem);
       font-weight: 600;
       color: var(--ink-dark);
       line-height: 1.15;
@@ -546,57 +581,62 @@
     }
 
     /* =========================================================================
-       ENVELOPE ABERTO COM CARTA DESLIZANTE (ESTILO DO VÍDEO)
+       ENVELOPE DE GESSO/MARFIM COM CARTA DESLIZANTE NO SCROLL
        ========================================================================= */
     .letter-showcase {
       position: relative;
-      padding-top: 28px;
+      padding-top: 12px;
       margin: 0 auto;
-      max-width: 420px;
+      max-width: 400px;
     }
 
     .letter-card {
       position: relative;
       z-index: 2;
-      background: var(--bg-card);
-      border: 1px solid var(--border-soft);
-      border-radius: 14px;
-      padding: 32px 24px 36px;
+      background: linear-gradient(180deg, #fffdf9 0%, #faf5ec 100%);
+      border: 1px solid rgba(182, 145, 69, 0.36);
+      border-radius: 16px;
+      padding: 30px 22px 44px;
       text-align: center;
-      box-shadow: 0 14px 36px rgba(58, 51, 43, 0.09);
-      transform: translateY(22px);
-      transition: transform 1s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    .letter-showcase.visible .letter-card {
-      transform: translateY(0);
+      box-shadow:
+        0 14px 36px rgba(58, 50, 42, 0.08),
+        inset 0 0 0 5px rgba(255, 253, 249, 0.8),
+        inset 0 0 0 6px rgba(182, 145, 69, 0.16);
+      transform: translateY(58px);
+      will-change: transform;
+      transition: transform 0.25s ease-out;
     }
 
     .letter-quote {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.28rem;
+      font-size: clamp(1.18rem, 4.8vw, 1.32rem);
       font-style: italic;
       line-height: 1.6;
       color: var(--ink-dark);
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
 
     .letter-verse-ref {
-      font-size: 0.72rem;
-      letter-spacing: 0.2em;
+      font-size: 0.7rem;
+      letter-spacing: 0.22em;
       text-transform: uppercase;
-      color: var(--gold-primary);
+      color: var(--gold-deep);
       font-weight: 600;
     }
 
+    /* Bolso claro em tom gesso/champanhe harmonizado com a identidade */
     .letter-pocket {
       position: relative;
       z-index: 3;
-      margin-top: -18px;
-      height: 54px;
-      background: linear-gradient(180deg, #4b4237 0%, #373027 100%);
-      border-radius: 0 0 16px 16px;
-      box-shadow: 0 12px 28px rgba(45, 38, 30, 0.18);
+      margin-top: -28px;
+      height: 68px;
+      background: linear-gradient(180deg, #efe6d6 0%, #e3d6c0 100%);
+      border: 1px solid rgba(182, 145, 69, 0.38);
+      border-top: none;
+      border-radius: 0 0 18px 18px;
+      box-shadow:
+        0 14px 30px rgba(58, 50, 42, 0.1),
+        inset 0 2px 8px rgba(255, 253, 249, 0.7);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -605,67 +645,75 @@
     .letter-pocket::before {
       content: '';
       position: absolute;
-      top: -16px;
-      left: 0;
-      right: 0;
-      height: 16px;
-      background: #4b4237;
+      top: -22px;
+      left: -1px;
+      right: -1px;
+      height: 23px;
+      background: linear-gradient(180deg, #f4ece0 0%, #efe6d6 100%);
       clip-path: polygon(0 100%, 50% 0, 100% 100%);
+      filter: drop-shadow(0 -2px 4px rgba(58, 50, 42, 0.08));
     }
 
     .mini-seal-badge {
-      width: 42px;
-      height: 42px;
+      width: 48px;
+      height: 48px;
       border-radius: 50%;
-      background: radial-gradient(circle at 35% 35%, #f5efe4 0%, #d8cbb6 100%);
-      border: 2px solid rgba(255, 253, 249, 0.7);
+      background: radial-gradient(circle at 35% 30%, #fffdf9 0%, #eadfcd 62%, #d5c5a9 100%);
+      border: 1.5px solid rgba(182, 145, 69, 0.55);
       display: flex;
       align-items: center;
       justify-content: center;
       font-family: 'Cormorant Garamond', serif;
       font-weight: 700;
-      font-size: 0.85rem;
-      color: var(--ink-dark);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-      transform: translateY(-8px);
+      font-size: 0.9rem;
+      letter-spacing: 0.04em;
+      color: var(--gold-deep);
+      box-shadow:
+        0 5px 14px rgba(58, 50, 42, 0.16),
+        inset 0 0 0 3px rgba(255, 253, 249, 0.65);
+      transform: translateY(-14px);
     }
 
     /* =========================================================================
-       CONTAGEM REGRESSIVA
+       CONTAGEM REGRESSIVA (AJUSTADA PARA TELAS DE 320px–360px SEM CORTAR)
        ========================================================================= */
     .countdown-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-      max-width: 420px;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 7px;
+      max-width: 400px;
       margin: 0 auto;
     }
 
     .count-box {
+      min-width: 0;
       background: var(--bg-card);
       border: 1px solid var(--border-soft);
-      border-radius: 14px;
-      padding: 16px 8px;
+      border-radius: 13px;
+      padding: 14px 4px;
       text-align: center;
-      box-shadow: 0 8px 22px rgba(58, 51, 43, 0.05);
+      box-shadow: 0 8px 20px rgba(58, 50, 42, 0.05);
     }
 
     .count-num {
       display: block;
       font-family: 'Cormorant Garamond', serif;
-      font-size: 2rem;
+      font-size: clamp(1.6rem, 6.8vw, 2.05rem);
       font-weight: 600;
-      color: var(--gold-primary);
+      color: var(--gold-deep);
       line-height: 1.05;
     }
 
     .count-label {
       display: block;
-      font-size: 0.62rem;
-      letter-spacing: 0.16em;
+      font-size: clamp(0.5rem, 2.35vw, 0.62rem);
+      letter-spacing: 0.08em;
       text-transform: uppercase;
       color: var(--ink-muted);
-      margin-top: 6px;
+      margin-top: 5px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: clip;
     }
 
     /* =========================================================================
@@ -673,12 +721,11 @@
        ========================================================================= */
     .timeline-container {
       position: relative;
-      max-width: 410px;
-      margin: 14px auto 0;
-      padding-top: 26px;
+      max-width: 400px;
+      margin: 10px auto 0;
+      padding-top: 18px;
     }
 
-    /* Pérola no topo da linha do tempo */
     .timeline-pearl {
       width: 18px;
       height: 18px;
@@ -686,7 +733,7 @@
       margin: 0 auto;
       background: radial-gradient(circle at 32% 30%, #ffffff 0%, #f3ece0 48%, #cbbba0 100%);
       box-shadow:
-        0 3px 10px rgba(184, 148, 70, 0.35),
+        0 3px 10px rgba(182, 145, 69, 0.35),
         inset -2px -2px 4px rgba(140, 120, 90, 0.25);
       position: relative;
       z-index: 3;
@@ -705,7 +752,7 @@
       left: 50%;
       width: 1.5px;
       transform: translateX(-50%);
-      background: linear-gradient(180deg, var(--gold-primary) 0%, rgba(184, 148, 70, 0.2) 100%);
+      background: linear-gradient(180deg, var(--gold-primary) 0%, rgba(182, 145, 69, 0.2) 100%);
     }
 
     .timeline-item {
@@ -722,11 +769,11 @@
 
     .tl-time {
       text-align: right;
-      padding-right: 14px;
+      padding-right: 12px;
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.35rem;
+      font-size: 1.32rem;
       font-weight: 600;
-      color: var(--gold-primary);
+      color: var(--gold-deep);
     }
 
     .tl-dot {
@@ -741,19 +788,19 @@
     }
 
     .tl-content {
-      padding-left: 14px;
+      padding-left: 12px;
       text-align: left;
     }
 
     .tl-content h4 {
-      font-size: 0.85rem;
+      font-size: 0.84rem;
       font-weight: 600;
       color: var(--ink-dark);
       margin-bottom: 2px;
     }
 
     .tl-content p {
-      font-size: 0.74rem;
+      font-size: 0.73rem;
       color: var(--ink-muted);
       line-height: 1.35;
     }
@@ -765,10 +812,10 @@
       background: var(--bg-card);
       border: 1px solid var(--border-soft);
       border-radius: 18px;
-      padding: 28px 22px;
+      padding: 26px 20px;
       text-align: center;
       box-shadow: var(--shadow-soft);
-      max-width: 440px;
+      max-width: 420px;
       margin: 0 auto;
     }
 
@@ -792,7 +839,7 @@
     }
 
     .info-card p {
-      font-size: 0.84rem;
+      font-size: 0.83rem;
       color: var(--ink-muted);
       line-height: 1.55;
       margin-bottom: 20px;
@@ -815,7 +862,7 @@
       background: linear-gradient(135deg, #c29e4f 0%, #a58034 100%);
       color: #fffdf9;
       text-decoration: none;
-      font-size: 0.76rem;
+      font-size: 0.74rem;
       font-weight: 600;
       letter-spacing: 0.14em;
       text-transform: uppercase;
@@ -840,7 +887,7 @@
       background: transparent;
       color: var(--ink-dark);
       text-decoration: none;
-      font-size: 0.74rem;
+      font-size: 0.73rem;
       font-weight: 600;
       letter-spacing: 0.12em;
       text-transform: uppercase;
@@ -855,7 +902,7 @@
     }
 
     /* =========================================================================
-       FORMULÁRIO RSVP (GOOGLE APPS SCRIPT)
+       FORMULÁRIO RSVP (ALINHAMENTO PERFEITO EM MOBILE)
        ========================================================================= */
     .rsvp-form {
       text-align: left;
@@ -864,39 +911,50 @@
       gap: 15px;
     }
 
+    .form-group {
+      min-width: 0;
+    }
+
     .form-group label {
       display: block;
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       font-weight: 600;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
       color: var(--ink-muted);
       margin-bottom: 6px;
+      white-space: nowrap;
     }
 
     .form-control {
       width: 100%;
-      padding: 12px 14px;
+      padding: 12px 13px;
       border-radius: 10px;
-      border: 1px solid rgba(184, 148, 70, 0.35);
+      border: 1px solid rgba(182, 145, 69, 0.36);
       background: #faf7f2;
       color: var(--ink-dark);
       font-family: 'Montserrat', sans-serif;
-      font-size: 0.88rem;
+      font-size: 0.86rem;
       transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    select.form-control {
+      padding-right: 28px;
+      text-overflow: ellipsis;
     }
 
     .form-control:focus {
       outline: none;
       border-color: var(--gold-primary);
-      box-shadow: 0 0 0 3px rgba(184, 148, 70, 0.15);
+      box-shadow: 0 0 0 3px rgba(182, 145, 69, 0.15);
       background: #ffffff;
     }
 
     .form-row {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 12px;
+      align-items: end;
     }
 
     .rsvp-feedback {
@@ -965,18 +1023,33 @@
 
     footer {
       text-align: center;
-      padding: 28px 20px 16px;
+      padding: 24px 20px 12px;
       color: var(--ink-muted);
-      font-size: 0.74rem;
+      font-size: 0.72rem;
       letter-spacing: 0.12em;
     }
 
     footer strong {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.2rem;
+      font-size: 1.25rem;
       color: var(--ink-dark);
       display: block;
       margin-bottom: 4px;
+    }
+
+    .footer-replay-link {
+      display: inline-block;
+      margin-top: 14px;
+      background: none;
+      border: none;
+      color: var(--gold-deep);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      text-decoration: underline;
+      cursor: pointer;
     }
   </style>
 </head>
@@ -988,17 +1061,17 @@
   <div id="envelope-stage" aria-label="Envelope do convite de casamento de Ester e Wilk">
     <canvas id="particles-canvas"></canvas>
 
-    <div class="envelope-wrapper" id="envelope-wrapper">
-      <!-- Interior revelado na abertura -->
+    <div class="envelope-wrapper" id="envelope-wrapper" role="button" tabindex="0" aria-label="Tocar no envelope para abrir o convite">
+      <!-- Cavidade interna + Cartão que sobe ao abrir -->
       <div class="env-cavity">
         <div class="env-cavity-card">
-          <span>Save the Date</span>
+          <span>Convite de Casamento</span>
           <h2>Ester &amp; Wilk</h2>
           <p>06 • 09 • 2027</p>
         </div>
       </div>
 
-      <!-- Abas recortadas via clip-path da imagem única -->
+      <!-- Abas recortadas exatamente nos vincos da arte -->
       <div class="env-flap flap-left"></div>
       <div class="env-flap flap-right"></div>
       <div class="env-flap flap-bottom"></div>
@@ -1009,21 +1082,30 @@
         <div class="flap-top-back"></div>
       </div>
 
-      <!-- Frestas com brilho dourado -->
+      <!-- Brilho dourado apenas nos trechos visíveis das dobras (fora do selo) -->
       <svg class="crease-shimmer" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
         <defs>
-          <linearGradient id="goldCrease" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#f7e39c" stop-opacity="0.1" />
-            <stop offset="50%" stop-color="#ffd966" stop-opacity="0.95" />
-            <stop offset="100%" stop-color="#f7e39c" stop-opacity="0.1" />
+          <linearGradient id="goldCreaseTop" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#f7e39c" stop-opacity="0.15" />
+            <stop offset="60%" stop-color="#ffd966" stop-opacity="0.95" />
+            <stop offset="100%" stop-color="#fff0b3" stop-opacity="1" />
+          </linearGradient>
+          <linearGradient id="goldCreaseBottom" x1="0%" y1="100%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#f7e39c" stop-opacity="0.15" />
+            <stop offset="60%" stop-color="#ffd966" stop-opacity="0.85" />
+            <stop offset="100%" stop-color="#fff0b3" stop-opacity="0.95" />
           </linearGradient>
         </defs>
-        <polyline points="0,0 50,52 100,0" fill="none" stroke="url(#goldCrease)" stroke-width="0.65" />
-        <polyline points="0,100 50,48 100,100" fill="none" stroke="url(#goldCrease)" stroke-width="0.45" />
+        <!-- Trechos diagonais superiores parando antes do selo -->
+        <line x1="4" y1="7" x2="39" y2="41" stroke="url(#goldCreaseTop)" stroke-width="0.6" stroke-linecap="round" />
+        <line x1="96" y1="7" x2="61" y2="41" stroke="url(#goldCreaseTop)" stroke-width="0.6" stroke-linecap="round" />
+        <!-- Trechos diagonais inferiores parando antes do selo -->
+        <line x1="4" y1="93" x2="39" y2="59" stroke="url(#goldCreaseBottom)" stroke-width="0.5" stroke-linecap="round" />
+        <line x1="96" y1="93" x2="61" y2="59" stroke="url(#goldCreaseBottom)" stroke-width="0.5" stroke-linecap="round" />
       </svg>
 
-      <!-- Selo Central Interativo -->
-      <button type="button" class="wax-seal-btn" id="wax-seal-btn" aria-label="Tocar no selo E e W para abrir o convite"></button>
+      <!-- Aura luminosa sutil sobre o selo real E e W -->
+      <div class="seal-aura" aria-hidden="true"></div>
     </div>
 
     <p class="seal-instruction" id="seal-instruction">Toque no selo para abrir</p>
@@ -1033,18 +1115,14 @@
        STAGE 2: CONTEÚDO COMPLETO DO CONVITE
        ======================================================================= -->
   <main id="invitation-main">
-    <button type="button" class="replay-btn" id="replay-envelope-btn" title="Ver envelope novamente">
-      &#9993; Rever envelope
+    <!-- Botão discreto no topo direito (zero sobreposição com formulários) -->
+    <button type="button" class="replay-btn" id="replay-envelope-btn" title="Ver abertura do envelope">
+      &#9993; Envelope
     </button>
 
-    <!-- CAPA COM MOLDURA ONDULADA -->
-    <section class="hero-section">
-      <div class="scalloped-frame">
-        <svg class="scallop-ornament" viewBox="0 0 300 30" fill="none" aria-hidden="true">
-          <path d="M5 24 Q 35 4, 65 20 T 125 20 T 175 20 T 235 20 T 295 24" stroke="currentColor" stroke-width="1.3" fill="none" />
-          <circle cx="150" cy="12" r="3" fill="currentColor" />
-        </svg>
-
+    <!-- CAPA COM MOLDURA ESCULPIDA EM RELEVO DE GESSO -->
+    <section class="hero-section" id="hero-section">
+      <div class="hero-content-box">
         <div class="monogram-crest">E &amp; W</div>
         <p class="hero-kicker">Com a bênção de Deus e de seus pais</p>
 
@@ -1064,18 +1142,13 @@
 
         <p class="hero-venue">Às 16h00 • Espaço Perfeito</p>
         <p class="hero-city">Mooca — São Paulo, SP</p>
-
-        <svg class="scallop-ornament bottom" viewBox="0 0 300 30" fill="none" aria-hidden="true">
-          <path d="M5 24 Q 35 4, 65 20 T 125 20 T 175 20 T 235 20 T 295 24" stroke="currentColor" stroke-width="1.3" fill="none" />
-          <circle cx="150" cy="12" r="3" fill="currentColor" />
-        </svg>
       </div>
     </section>
 
-    <!-- CARTA DESLIZANTE NO ENVELOPE -->
+    <!-- CARTA DESLIZANTE NO ENVELOPE DE GESSO/MARFIM -->
     <section class="section-block">
-      <div class="letter-showcase reveal-on-scroll">
-        <div class="letter-card">
+      <div class="letter-showcase" id="letter-showcase">
+        <div class="letter-card" id="letter-card">
           <p class="letter-quote">
             “Assim, eles já não são dois, mas sim uma só carne. Portanto, o que Deus uniu, ninguém separe.”
           </p>
@@ -1268,14 +1341,14 @@
           <div class="form-group">
             <label for="guest-status">Você poderá comparecer? *</label>
             <select id="guest-status" name="presenca" class="form-control" required>
-              <option value="Sim">Sim, com certeza estarei lá!</option>
-              <option value="Não">Infelizmente não poderei comparecer</option>
+              <option value="Sim">Sim, estarei lá!</option>
+              <option value="Não">Não poderei comparecer</option>
             </select>
           </div>
 
           <div class="form-row">
             <div class="form-group">
-              <label for="adults-count">Adultos (com você)</label>
+              <label for="adults-count">Adultos *</label>
               <input type="number" id="adults-count" name="adultos" class="form-control" min="1" max="10" value="1" required />
             </div>
             <div class="form-group">
@@ -1285,8 +1358,8 @@
           </div>
 
           <div class="form-group">
-            <label for="guest-notes">Acompanhantes ou Mensagem aos Noivos</label>
-            <textarea id="guest-notes" name="observacoes" rows="3" class="form-control" placeholder="Nomes dos acompanhantes ou recado especial..."></textarea>
+            <label for="guest-notes">Acompanhantes ou Recado</label>
+            <textarea id="guest-notes" name="observacoes" rows="3" class="form-control" placeholder="Nomes dos acompanhantes ou mensagem aos noivos..."></textarea>
           </div>
 
           <button type="submit" class="btn-gold" id="submit-rsvp-btn" style="width: 100%; margin-top: 4px;">
@@ -1301,6 +1374,10 @@
     <footer>
       <strong>Ester &amp; Wilk</strong>
       06 de Setembro de 2027 • Espaço Perfeito — Mooca
+      <br />
+      <button type="button" class="footer-replay-link" id="footer-replay-btn">
+        Rever abertura do envelope
+      </button>
     </footer>
   </main>
 
@@ -1318,51 +1395,59 @@
 
   <script>
     /* =========================================================================
-       CONFIGURAÇÕES RÁPIDAS (EDITE AQUI QUANDO TIVER OS LINKS FINAIS)
+       CONFIGURAÇÕES RÁPIDAS
        ========================================================================= */
     const CONFIG = {
-      // Data oficial do casamento (Horário de Brasília -03:00)
       weddingDateISO: '2027-09-06T16:00:00-03:00',
-
-      // Substitua pelo link real da lista de presentes quando estiver pronto
       giftListURL: 'https://listadepresentes.exemplo.com.br/ester-e-wilk',
-
-      // Cole aqui a URL do seu Web App do Google Apps Script para gravar na planilha
       googleAppsScriptURL: ''
     };
 
     /* =========================================================================
-       1. AUTO-DETECÇÃO DA IMAGEM DO ENVELOPE (envelope.webp / .jpg / .png)
+       1. AUTO-DETECÇÃO DAS IMAGENS (envelope.* e capa.*)
        ========================================================================= */
-    (function resolveEnvelopeImage() {
-      const candidates = ['envelope.webp', 'envelope.jpg', 'envelope.jpeg', 'envelope.png'];
+    function resolveAssetImage(baseNames, cssVarName, onMissing) {
       let index = 0;
-
       function tryNext() {
-        if (index >= candidates.length) return;
+        if (index >= baseNames.length) {
+          if (typeof onMissing === 'function') onMissing();
+          return;
+        }
         const img = new Image();
-        const current = candidates[index++];
+        const current = baseNames[index++];
         img.onload = () => {
-          document.documentElement.style.setProperty('--envelope-img', `url('${current}')`);
+          document.documentElement.style.setProperty(cssVarName, `url('${current}')`);
         };
         img.onerror = tryNext;
         img.src = current;
       }
       tryNext();
-    })();
+    }
 
-    // Atualiza link da lista de presentes
+    resolveAssetImage(
+      ['envelope.webp', 'envelope.jpg', 'envelope.jpeg', 'envelope.png'],
+      '--envelope-img'
+    );
+
+    const heroSection = document.getElementById('hero-section');
+    resolveAssetImage(
+      ['capa.webp', 'capa.jpg', 'capa.jpeg', 'capa.png'],
+      '--cover-img',
+      () => heroSection.classList.add('no-cover-img')
+    );
+
     const giftLinkEl = document.getElementById('gift-list-link');
     if (giftLinkEl && CONFIG.giftListURL) {
       giftLinkEl.href = CONFIG.giftListURL;
     }
 
     /* =========================================================================
-       2. PARTÍCULAS DOURADAS + ABERTURA 3D DO ENVELOPE
+       2. PARTÍCULAS DOURADAS + COREOGRAFIA 3D DO ENVELOPE
        ========================================================================= */
     const envelopeStage = document.getElementById('envelope-stage');
-    const waxSealBtn = document.getElementById('wax-seal-btn');
+    const envelopeWrapper = document.getElementById('envelope-wrapper');
     const replayBtn = document.getElementById('replay-envelope-btn');
+    const footerReplayBtn = document.getElementById('footer-replay-btn');
     const canvas = document.getElementById('particles-canvas');
     const ctx = canvas.getContext('2d');
 
@@ -1379,17 +1464,17 @@
     function spawnGoldParticles(originX, originY) {
       particles = [];
       const colors = ['#ffd966', '#f3d47c', '#fff4cc', '#d4af37', '#e6c36a'];
-      for (let i = 0; i < 65; i++) {
+      for (let i = 0; i < 72; i++) {
         const angle = Math.random() * Math.PI * 2;
-        const speed = 1.4 + Math.random() * 4.5;
+        const speed = 1.2 + Math.random() * 4.4;
         particles.push({
           x: originX,
           y: originY,
           vx: Math.cos(angle) * speed,
-          vy: Math.sin(angle) * speed - 1.2,
-          size: 1.8 + Math.random() * 3.4,
+          vy: Math.sin(angle) * speed - 1.3,
+          size: 1.6 + Math.random() * 3.2,
           alpha: 1,
-          decay: 0.011 + Math.random() * 0.014,
+          decay: 0.01 + Math.random() * 0.013,
           color: colors[Math.floor(Math.random() * colors.length)]
         });
       }
@@ -1400,7 +1485,7 @@
         particles.forEach((p) => {
           p.x += p.vx;
           p.y += p.vy;
-          p.vy += 0.035; // gravidade suave
+          p.vy += 0.03;
           p.alpha -= p.decay;
           if (p.alpha > 0) {
             ctx.save();
@@ -1422,29 +1507,60 @@
       animateParticles();
     }
 
-    waxSealBtn.addEventListener('click', () => {
+    function openEnvelope() {
       if (envelopeStage.classList.contains('opening')) return;
 
-      const rect = waxSealBtn.getBoundingClientRect();
+      const rect = envelopeWrapper.getBoundingClientRect();
+      // Dispara as partículas exatamente do centro do selo E e W
       spawnGoldParticles(rect.left + rect.width / 2, rect.top + rect.height / 2);
 
       envelopeStage.classList.add('opening');
 
-      // Após a aba superior girar e o brilho dourado aparecer, revela o convite
+      // Aguarda a aba superior girar e o cartão interno emergir antes de revelar a capa
       setTimeout(() => {
         envelopeStage.classList.add('fade-out');
         document.body.classList.remove('envelope-locked');
-      }, 1550);
+      }, 1750);
+    }
+
+    envelopeWrapper.addEventListener('click', openEnvelope);
+    envelopeWrapper.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openEnvelope();
+      }
     });
 
-    replayBtn.addEventListener('click', () => {
+    function replayEnvelope() {
       window.scrollTo({ top: 0, behavior: 'instant' });
       envelopeStage.classList.remove('opening', 'fade-out');
       document.body.classList.add('envelope-locked');
-    });
+    }
+
+    replayBtn.addEventListener('click', replayEnvelope);
+    footerReplayBtn.addEventListener('click', replayEnvelope);
 
     /* =========================================================================
-       3. CONTAGEM REGRESSIVA AO VIVO
+       3. DESLIZAMENTO PROGRESSIVO DA CARTA AO ROLAR A PÁGINA
+       ========================================================================= */
+    const letterShowcase = document.getElementById('letter-showcase');
+    const letterCard = document.getElementById('letter-card');
+
+    function updateLetterSlide() {
+      if (!letterShowcase || !letterCard) return;
+      const rect = letterShowcase.getBoundingClientRect();
+      const vh = window.innerHeight;
+      // Progresso de 0 (entrando embaixo) até 1 (centralizado na tela)
+      const progress = Math.min(1, Math.max(0, (vh - rect.top) / (vh * 0.65)));
+      const translateY = (1 - progress) * 58;
+      letterCard.style.transform = `translateY(${translateY.toFixed(1)}px)`;
+    }
+
+    window.addEventListener('scroll', () => requestAnimationFrame(updateLetterSlide), { passive: true });
+    updateLetterSlide();
+
+    /* =========================================================================
+       4. CONTAGEM REGRESSIVA AO VIVO
        ========================================================================= */
     const targetTimestamp = new Date(CONFIG.weddingDateISO).getTime();
 
@@ -1467,7 +1583,7 @@
     setInterval(updateCountdown, 1000);
 
     /* =========================================================================
-       4. ANIMAÇÃO DE REVELAÇÃO AO ROLAR A PÁGINA
+       5. ANIMAÇÃO DE REVELAÇÃO AO ROLAR A PÁGINA
        ========================================================================= */
     const observer = new IntersectionObserver(
       (entries) => {
@@ -1477,13 +1593,13 @@
           }
         });
       },
-      { threshold: 0.16 }
+      { threshold: 0.14 }
     );
 
     document.querySelectorAll('.reveal-on-scroll').forEach((el) => observer.observe(el));
 
     /* =========================================================================
-       5. FORMULÁRIO RSVP COM MODAL DE CONFIRMAÇÃO + GOOGLE APPS SCRIPT
+       6. FORMULÁRIO RSVP COM MODAL DE CONFIRMAÇÃO + GOOGLE APPS SCRIPT
        ========================================================================= */
     const rsvpForm = document.getElementById('rsvp-form');
     const confirmModal = document.getElementById('confirm-modal');
@@ -1533,7 +1649,6 @@
             })
           });
         } else {
-          // Simula resposta imediata enquanto a URL da planilha não é configurada
           await new Promise((r) => setTimeout(r, 500));
         }
 
