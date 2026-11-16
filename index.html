@@ -1,0 +1,1553 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <title>Ester &amp; Wilk — 06.09.2027</title>
+  <meta name="description" content="Convite de Casamento de Ester & Wilk — 06 de Setembro de 2027, às 16h, no Espaço Perfeito – Mooca." />
+
+  <!-- Tipografia Editorial & Moderna -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Great+Vibes&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg-linen: #ebe4d8;
+      --bg-alabaster: #faf7f2;
+      --bg-plaster: #f2ece1;
+      --bg-card: #fffdf9;
+      --gold-primary: #b89446;
+      --gold-light: #dfC27d;
+      --gold-glow: rgba(223, 194, 125, 0.85);
+      --ink-dark: #3a332b;
+      --ink-muted: #74695c;
+      --border-soft: rgba(184, 148, 70, 0.28);
+      --shadow-soft: 0 18px 45px rgba(58, 51, 43, 0.12);
+      --envelope-img: url('envelope.webp');
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background-color: var(--bg-alabaster);
+      color: var(--ink-dark);
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    body {
+      min-height: 100dvh;
+      overflow-x: hidden;
+      background: radial-gradient(circle at 50% 20%, #f7f3eb 0%, var(--bg-linen) 100%);
+    }
+
+    body.envelope-locked {
+      overflow: hidden;
+      height: 100dvh;
+    }
+
+    /* =========================================================================
+       STAGE 1: ENVELOPE 3D ESCULPIDO EM GESSO
+       ========================================================================= */
+    #envelope-stage {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      background: radial-gradient(circle at center, #f6f1e7 0%, #dfd6c7 100%);
+      transition: opacity 1.1s cubic-bezier(0.4, 0, 0.2, 1), visibility 1.1s ease;
+    }
+
+    #envelope-stage.fade-out {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    #particles-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1020;
+    }
+
+    .envelope-wrapper {
+      position: relative;
+      width: min(90vw, 410px);
+      aspect-ratio: 704 / 1520;
+      max-height: 84dvh;
+      perspective: 1400px;
+      border-radius: 10px;
+      box-shadow:
+        0 28px 65px rgba(45, 38, 30, 0.28),
+        0 6px 18px rgba(45, 38, 30, 0.14);
+      transition: transform 1.25s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    #envelope-stage.opening .envelope-wrapper {
+      transform: scale(1.035);
+    }
+
+    /* Interior revelado quando a aba superior abre */
+    .env-cavity {
+      position: absolute;
+      inset: 0;
+      border-radius: 10px;
+      background:
+        radial-gradient(circle at 50% 32%, rgba(255, 252, 245, 0.98) 0%, rgba(236, 226, 208, 0.96) 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding-top: 17%;
+      text-align: center;
+      overflow: hidden;
+      box-shadow: inset 0 12px 30px rgba(82, 68, 48, 0.22);
+    }
+
+    .env-cavity-card {
+      width: 82%;
+      padding: 20px 14px;
+      border: 1px solid rgba(184, 148, 70, 0.45);
+      background: rgba(255, 253, 249, 0.92);
+      border-radius: 6px;
+      box-shadow: 0 8px 24px rgba(58, 51, 43, 0.08);
+      transform: translateY(12px);
+      opacity: 0.7;
+      transition: transform 1.2s ease, opacity 1.2s ease;
+    }
+
+    #envelope-stage.opening .env-cavity-card {
+      transform: translateY(-4px);
+      opacity: 1;
+    }
+
+    .env-cavity-card span {
+      display: block;
+      font-size: 0.65rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold-primary);
+      margin-bottom: 6px;
+    }
+
+    .env-cavity-card h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.75rem;
+      font-weight: 600;
+      color: var(--ink-dark);
+      line-height: 1.1;
+    }
+
+    .env-cavity-card p {
+      font-size: 0.72rem;
+      letter-spacing: 0.16em;
+      color: var(--ink-muted);
+      margin-top: 6px;
+    }
+
+    /* Camadas recortadas da imagem única do envelope */
+    .env-flap {
+      position: absolute;
+      inset: 0;
+      border-radius: 10px;
+      background-image: var(--envelope-img);
+      background-size: 100% 100%;
+      background-position: center;
+      background-repeat: no-repeat;
+      will-change: transform, filter;
+    }
+
+    /* Aba Inferior */
+    .flap-bottom {
+      z-index: 3;
+      clip-path: polygon(0% 100%, 50% 48%, 100% 100%);
+      filter: drop-shadow(0 -4px 8px rgba(52, 43, 32, 0.16));
+    }
+
+    /* Abas Laterais */
+    .flap-left {
+      z-index: 2;
+      clip-path: polygon(0% 0%, 50% 50%, 0% 100%);
+      filter: drop-shadow(3px 0 6px rgba(52, 43, 32, 0.14));
+    }
+
+    .flap-right {
+      z-index: 2;
+      clip-path: polygon(100% 0%, 50% 50%, 100% 100%);
+      filter: drop-shadow(-3px 0 6px rgba(52, 43, 32, 0.14));
+    }
+
+    /* Aba Superior com rotação 3D */
+    .flap-top-pivot {
+      position: absolute;
+      inset: 0;
+      z-index: 5;
+      transform-style: preserve-3d;
+      transform-origin: top center;
+      transition: transform 1.45s cubic-bezier(0.38, 0.05, 0.22, 1), z-index 0s linear 0.65s;
+      pointer-events: none;
+    }
+
+    #envelope-stage.opening .flap-top-pivot {
+      transform: rotateX(178deg);
+      z-index: 1;
+    }
+
+    .flap-top-front {
+      position: absolute;
+      inset: 0;
+      border-radius: 10px;
+      background-image: var(--envelope-img);
+      background-size: 100% 100%;
+      background-position: center;
+      clip-path: polygon(0% 0%, 100% 0%, 50% 52%);
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      filter: drop-shadow(0 6px 12px rgba(45, 36, 25, 0.22));
+    }
+
+    .flap-top-back {
+      position: absolute;
+      inset: 0;
+      border-radius: 10px;
+      background: linear-gradient(180deg, #e8dfd0 0%, #f7f2e8 100%);
+      clip-path: polygon(0% 0%, 100% 0%, 50% 52%);
+      transform: rotateX(180deg);
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+
+    /* Brilho dourado nas frestas diagonais */
+    .crease-shimmer {
+      position: absolute;
+      inset: 0;
+      z-index: 6;
+      pointer-events: none;
+      opacity: 0.35;
+      transition: opacity 0.6s ease, filter 0.6s ease;
+    }
+
+    #envelope-stage.opening .crease-shimmer {
+      opacity: 1;
+      filter: drop-shadow(0 0 10px var(--gold-glow)) drop-shadow(0 0 22px rgba(255, 225, 145, 0.9));
+    }
+
+    /* Botão do Selo de Cera Central (recorte exato da mesma imagem) */
+    .wax-seal-btn {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 31%;
+      aspect-ratio: 1 / 1;
+      transform: translate(-50%, -50%);
+      z-index: 10;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      background-image: var(--envelope-img);
+      /* Escala e centraliza exatamente a região do selo E e W da arte */
+      background-size: 322.5% 696.5%;
+      background-position: 50% 50%;
+      box-shadow:
+        0 8px 22px rgba(48, 39, 28, 0.28),
+        0 0 0 0 rgba(212, 175, 55, 0.55);
+      animation: sealPulse 2.6s infinite ease-in-out;
+      transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.55s ease;
+    }
+
+    .wax-seal-btn:hover {
+      transform: translate(-50%, -50%) scale(1.06);
+    }
+
+    .wax-seal-btn:active {
+      transform: translate(-50%, -50%) scale(0.95);
+    }
+
+    #envelope-stage.opening .wax-seal-btn {
+      animation: none;
+      transform: translate(-50%, -50%) scale(1.18);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    @keyframes sealPulse {
+      0%, 100% {
+        box-shadow:
+          0 8px 22px rgba(48, 39, 28, 0.28),
+          0 0 0 0 rgba(212, 175, 55, 0.45);
+      }
+      50% {
+        box-shadow:
+          0 10px 26px rgba(48, 39, 28, 0.32),
+          0 0 0 14px rgba(212, 175, 55, 0);
+      }
+    }
+
+    .seal-instruction {
+      margin-top: 16px;
+      font-size: 0.74rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      text-align: center;
+      font-weight: 500;
+      animation: fadeText 2.4s infinite ease-in-out;
+      transition: opacity 0.4s ease;
+    }
+
+    #envelope-stage.opening .seal-instruction {
+      opacity: 0;
+    }
+
+    @keyframes fadeText {
+      0%, 100% { opacity: 0.55; }
+      50% { opacity: 1; }
+    }
+
+    /* =========================================================================
+       STAGE 2: PÁGINA PRINCIPAL DO CONVITE
+       ========================================================================= */
+    #invitation-main {
+      max-width: 540px;
+      margin: 0 auto;
+      background-color: var(--bg-alabaster);
+      box-shadow: 0 0 60px rgba(58, 51, 43, 0.08);
+      position: relative;
+      padding-bottom: 56px;
+    }
+
+    .replay-btn {
+      position: fixed;
+      bottom: 18px;
+      right: 18px;
+      z-index: 90;
+      background: rgba(255, 253, 249, 0.92);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border-soft);
+      color: var(--ink-dark);
+      padding: 9px 14px;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(58, 51, 43, 0.12);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: transform 0.25s ease, border-color 0.25s ease;
+    }
+
+    .replay-btn:hover {
+      transform: translateY(-2px);
+      border-color: var(--gold-primary);
+    }
+
+    /* HERO COM MOLDURA ONDULADA & AQUARELA BOTÂNICA */
+    .hero-section {
+      position: relative;
+      padding: 26px 18px 36px;
+      background:
+        radial-gradient(circle at 20% 15%, rgba(226, 214, 192, 0.55) 0%, transparent 55%),
+        radial-gradient(circle at 85% 75%, rgba(208, 214, 198, 0.45) 0%, transparent 60%),
+        linear-gradient(180deg, #f3ede2 0%, #faf7f2 100%);
+      overflow: hidden;
+    }
+
+    .scalloped-frame {
+      position: relative;
+      border-radius: 28px;
+      padding: 44px 24px 48px;
+      text-align: center;
+      background:
+        radial-gradient(ellipse at 50% 0%, rgba(255, 253, 248, 0.96) 0%, rgba(246, 240, 230, 0.92) 65%, rgba(232, 223, 206, 0.88) 100%);
+      border: 1.5px solid rgba(184, 148, 70, 0.38);
+      box-shadow:
+        inset 0 0 0 6px rgba(255, 253, 249, 0.75),
+        inset 0 0 0 7px rgba(184, 148, 70, 0.25),
+        0 20px 45px rgba(58, 51, 43, 0.08);
+    }
+
+    /* Ornamento ondulado superior e inferior em relevo suave */
+    .scallop-ornament {
+      width: 100%;
+      max-width: 260px;
+      height: 26px;
+      margin: 0 auto 14px;
+      color: var(--gold-primary);
+      opacity: 0.75;
+    }
+
+    .scallop-ornament.bottom {
+      margin: 22px auto 0;
+      transform: rotate(180deg);
+    }
+
+    .monogram-crest {
+      width: 68px;
+      height: 68px;
+      margin: 0 auto 18px;
+      border-radius: 50%;
+      border: 1px solid rgba(184, 148, 70, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.45rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      color: var(--gold-primary);
+      background: radial-gradient(circle, #fffdf9 0%, #f3ece0 100%);
+      box-shadow: 0 6px 18px rgba(184, 148, 70, 0.14);
+    }
+
+    .hero-kicker {
+      font-size: 0.72rem;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      margin-bottom: 12px;
+    }
+
+    .couple-names {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(3.2rem, 12vw, 4.3rem);
+      font-weight: 400;
+      color: var(--ink-dark);
+      line-height: 1.05;
+      margin: 6px 0 12px;
+      text-shadow: 0 2px 10px rgba(184, 148, 70, 0.15);
+    }
+
+    .couple-names .amp {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 0.68em;
+      color: var(--gold-primary);
+      margin: 0 6px;
+    }
+
+    .hero-invite-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.18rem;
+      font-style: italic;
+      color: var(--ink-muted);
+      max-width: 340px;
+      margin: 0 auto 24px;
+      line-height: 1.45;
+    }
+
+    .date-banner {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      padding: 12px 20px;
+      border-top: 1px solid var(--border-soft);
+      border-bottom: 1px solid var(--border-soft);
+      margin-bottom: 18px;
+    }
+
+    .date-banner .side {
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      font-weight: 500;
+    }
+
+    .date-banner .day-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.3rem;
+      font-weight: 600;
+      color: var(--gold-primary);
+      line-height: 1;
+      padding: 0 12px;
+      border-left: 1px solid var(--border-soft);
+      border-right: 1px solid var(--border-soft);
+    }
+
+    .hero-venue {
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-dark);
+      margin-top: 4px;
+    }
+
+    .hero-city {
+      font-size: 0.74rem;
+      color: var(--ink-muted);
+      letter-spacing: 0.12em;
+      margin-top: 3px;
+    }
+
+    /* =========================================================================
+       SEÇÕES GERAIS & REVEAL ANIMATION
+       ========================================================================= */
+    .section-block {
+      padding: 40px 22px;
+      position: relative;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 26px;
+    }
+
+    .section-tag {
+      display: block;
+      font-size: 0.68rem;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--gold-primary);
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      font-weight: 600;
+      color: var(--ink-dark);
+      line-height: 1.15;
+    }
+
+    .divider-line {
+      width: 54px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold-primary), transparent);
+      margin: 12px auto 0;
+    }
+
+    .reveal-on-scroll {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.85s ease, transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .reveal-on-scroll.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* =========================================================================
+       ENVELOPE ABERTO COM CARTA DESLIZANTE (ESTILO DO VÍDEO)
+       ========================================================================= */
+    .letter-showcase {
+      position: relative;
+      padding-top: 28px;
+      margin: 0 auto;
+      max-width: 420px;
+    }
+
+    .letter-card {
+      position: relative;
+      z-index: 2;
+      background: var(--bg-card);
+      border: 1px solid var(--border-soft);
+      border-radius: 14px;
+      padding: 32px 24px 36px;
+      text-align: center;
+      box-shadow: 0 14px 36px rgba(58, 51, 43, 0.09);
+      transform: translateY(22px);
+      transition: transform 1s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .letter-showcase.visible .letter-card {
+      transform: translateY(0);
+    }
+
+    .letter-quote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.28rem;
+      font-style: italic;
+      line-height: 1.6;
+      color: var(--ink-dark);
+      margin-bottom: 16px;
+    }
+
+    .letter-verse-ref {
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold-primary);
+      font-weight: 600;
+    }
+
+    .letter-pocket {
+      position: relative;
+      z-index: 3;
+      margin-top: -18px;
+      height: 54px;
+      background: linear-gradient(180deg, #4b4237 0%, #373027 100%);
+      border-radius: 0 0 16px 16px;
+      box-shadow: 0 12px 28px rgba(45, 38, 30, 0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .letter-pocket::before {
+      content: '';
+      position: absolute;
+      top: -16px;
+      left: 0;
+      right: 0;
+      height: 16px;
+      background: #4b4237;
+      clip-path: polygon(0 100%, 50% 0, 100% 100%);
+    }
+
+    .mini-seal-badge {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #f5efe4 0%, #d8cbb6 100%);
+      border: 2px solid rgba(255, 253, 249, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: var(--ink-dark);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+      transform: translateY(-8px);
+    }
+
+    /* =========================================================================
+       CONTAGEM REGRESSIVA
+       ========================================================================= */
+    .countdown-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      max-width: 420px;
+      margin: 0 auto;
+    }
+
+    .count-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-soft);
+      border-radius: 14px;
+      padding: 16px 8px;
+      text-align: center;
+      box-shadow: 0 8px 22px rgba(58, 51, 43, 0.05);
+    }
+
+    .count-num {
+      display: block;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      font-weight: 600;
+      color: var(--gold-primary);
+      line-height: 1.05;
+    }
+
+    .count-label {
+      display: block;
+      font-size: 0.62rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      margin-top: 6px;
+    }
+
+    /* =========================================================================
+       LINHA DO TEMPO COM PÉROLA NO TOPO
+       ========================================================================= */
+    .timeline-container {
+      position: relative;
+      max-width: 410px;
+      margin: 14px auto 0;
+      padding-top: 26px;
+    }
+
+    /* Pérola no topo da linha do tempo */
+    .timeline-pearl {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      margin: 0 auto;
+      background: radial-gradient(circle at 32% 30%, #ffffff 0%, #f3ece0 48%, #cbbba0 100%);
+      box-shadow:
+        0 3px 10px rgba(184, 148, 70, 0.35),
+        inset -2px -2px 4px rgba(140, 120, 90, 0.25);
+      position: relative;
+      z-index: 3;
+    }
+
+    .timeline-track {
+      position: relative;
+      padding: 20px 0 8px;
+    }
+
+    .timeline-track::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 1.5px;
+      transform: translateX(-50%);
+      background: linear-gradient(180deg, var(--gold-primary) 0%, rgba(184, 148, 70, 0.2) 100%);
+    }
+
+    .timeline-item {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1fr 24px 1fr;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .timeline-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .tl-time {
+      text-align: right;
+      padding-right: 14px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.35rem;
+      font-weight: 600;
+      color: var(--gold-primary);
+    }
+
+    .tl-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--bg-card);
+      border: 2px solid var(--gold-primary);
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+
+    .tl-content {
+      padding-left: 14px;
+      text-align: left;
+    }
+
+    .tl-content h4 {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--ink-dark);
+      margin-bottom: 2px;
+    }
+
+    .tl-content p {
+      font-size: 0.74rem;
+      color: var(--ink-muted);
+      line-height: 1.35;
+    }
+
+    /* =========================================================================
+       CARDS DE LOCAL & LISTA DE PRESENTES
+       ========================================================================= */
+    .info-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-soft);
+      border-radius: 18px;
+      padding: 28px 22px;
+      text-align: center;
+      box-shadow: var(--shadow-soft);
+      max-width: 440px;
+      margin: 0 auto;
+    }
+
+    .info-icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: var(--bg-plaster);
+      color: var(--gold-primary);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 14px;
+    }
+
+    .info-card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.55rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .info-card p {
+      font-size: 0.84rem;
+      color: var(--ink-muted);
+      line-height: 1.55;
+      margin-bottom: 20px;
+    }
+
+    .btn-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .btn-gold {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 13px 22px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #c29e4f 0%, #a58034 100%);
+      color: #fffdf9;
+      text-decoration: none;
+      font-size: 0.76rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(165, 128, 52, 0.25);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .btn-gold:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px rgba(165, 128, 52, 0.34);
+    }
+
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 20px;
+      border-radius: 999px;
+      background: transparent;
+      color: var(--ink-dark);
+      text-decoration: none;
+      font-size: 0.74rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border: 1px solid var(--border-soft);
+      cursor: pointer;
+      transition: border-color 0.25s ease, background 0.25s ease;
+    }
+
+    .btn-outline:hover {
+      border-color: var(--gold-primary);
+      background: var(--bg-plaster);
+    }
+
+    /* =========================================================================
+       FORMULÁRIO RSVP (GOOGLE APPS SCRIPT)
+       ========================================================================= */
+    .rsvp-form {
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      margin-bottom: 6px;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid rgba(184, 148, 70, 0.35);
+      background: #faf7f2;
+      color: var(--ink-dark);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.88rem;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--gold-primary);
+      box-shadow: 0 0 0 3px rgba(184, 148, 70, 0.15);
+      background: #ffffff;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .rsvp-feedback {
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 10px;
+      font-size: 0.82rem;
+      text-align: center;
+      display: none;
+    }
+
+    .rsvp-feedback.success {
+      display: block;
+      background: rgba(102, 138, 94, 0.12);
+      color: #35542e;
+      border: 1px solid rgba(102, 138, 94, 0.35);
+    }
+
+    .rsvp-feedback.error {
+      display: block;
+      background: rgba(184, 74, 74, 0.12);
+      color: #7d2929;
+      border: 1px solid rgba(184, 74, 74, 0.35);
+    }
+
+    /* MODAL DE CONFIRMAÇÃO ANTES DO ENVIO */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 1200;
+      background: rgba(40, 34, 27, 0.55);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-backdrop.active {
+      display: flex;
+    }
+
+    .modal-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-soft);
+      border-radius: 18px;
+      padding: 26px 22px;
+      max-width: 360px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 24px 50px rgba(0, 0, 0, 0.24);
+    }
+
+    .modal-box h4 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.55rem;
+      margin-bottom: 8px;
+    }
+
+    .modal-box p {
+      font-size: 0.84rem;
+      color: var(--ink-muted);
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 28px 20px 16px;
+      color: var(--ink-muted);
+      font-size: 0.74rem;
+      letter-spacing: 0.12em;
+    }
+
+    footer strong {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      color: var(--ink-dark);
+      display: block;
+      margin-bottom: 4px;
+    }
+  </style>
+</head>
+<body class="envelope-locked">
+
+  <!-- =======================================================================
+       STAGE 1: ENVELOPE ESCULPIDO EM 3D COM SELO E & W
+       ======================================================================= -->
+  <div id="envelope-stage" aria-label="Envelope do convite de casamento de Ester e Wilk">
+    <canvas id="particles-canvas"></canvas>
+
+    <div class="envelope-wrapper" id="envelope-wrapper">
+      <!-- Interior revelado na abertura -->
+      <div class="env-cavity">
+        <div class="env-cavity-card">
+          <span>Save the Date</span>
+          <h2>Ester &amp; Wilk</h2>
+          <p>06 • 09 • 2027</p>
+        </div>
+      </div>
+
+      <!-- Abas recortadas via clip-path da imagem única -->
+      <div class="env-flap flap-left"></div>
+      <div class="env-flap flap-right"></div>
+      <div class="env-flap flap-bottom"></div>
+
+      <!-- Aba Superior que gira em 3D -->
+      <div class="flap-top-pivot">
+        <div class="flap-top-front"></div>
+        <div class="flap-top-back"></div>
+      </div>
+
+      <!-- Frestas com brilho dourado -->
+      <svg class="crease-shimmer" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+        <defs>
+          <linearGradient id="goldCrease" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#f7e39c" stop-opacity="0.1" />
+            <stop offset="50%" stop-color="#ffd966" stop-opacity="0.95" />
+            <stop offset="100%" stop-color="#f7e39c" stop-opacity="0.1" />
+          </linearGradient>
+        </defs>
+        <polyline points="0,0 50,52 100,0" fill="none" stroke="url(#goldCrease)" stroke-width="0.65" />
+        <polyline points="0,100 50,48 100,100" fill="none" stroke="url(#goldCrease)" stroke-width="0.45" />
+      </svg>
+
+      <!-- Selo Central Interativo -->
+      <button type="button" class="wax-seal-btn" id="wax-seal-btn" aria-label="Tocar no selo E e W para abrir o convite"></button>
+    </div>
+
+    <p class="seal-instruction" id="seal-instruction">Toque no selo para abrir</p>
+  </div>
+
+  <!-- =======================================================================
+       STAGE 2: CONTEÚDO COMPLETO DO CONVITE
+       ======================================================================= -->
+  <main id="invitation-main">
+    <button type="button" class="replay-btn" id="replay-envelope-btn" title="Ver envelope novamente">
+      &#9993; Rever envelope
+    </button>
+
+    <!-- CAPA COM MOLDURA ONDULADA -->
+    <section class="hero-section">
+      <div class="scalloped-frame">
+        <svg class="scallop-ornament" viewBox="0 0 300 30" fill="none" aria-hidden="true">
+          <path d="M5 24 Q 35 4, 65 20 T 125 20 T 175 20 T 235 20 T 295 24" stroke="currentColor" stroke-width="1.3" fill="none" />
+          <circle cx="150" cy="12" r="3" fill="currentColor" />
+        </svg>
+
+        <div class="monogram-crest">E &amp; W</div>
+        <p class="hero-kicker">Com a bênção de Deus e de seus pais</p>
+
+        <h1 class="couple-names">
+          Ester <span class="amp">&amp;</span> Wilk
+        </h1>
+
+        <p class="hero-invite-text">
+          Convidam você para celebrar o início da nossa nova história de amor
+        </p>
+
+        <div class="date-banner">
+          <span class="side">Segunda</span>
+          <span class="day-num">06</span>
+          <span class="side">Set • 2027</span>
+        </div>
+
+        <p class="hero-venue">Às 16h00 • Espaço Perfeito</p>
+        <p class="hero-city">Mooca — São Paulo, SP</p>
+
+        <svg class="scallop-ornament bottom" viewBox="0 0 300 30" fill="none" aria-hidden="true">
+          <path d="M5 24 Q 35 4, 65 20 T 125 20 T 175 20 T 235 20 T 295 24" stroke="currentColor" stroke-width="1.3" fill="none" />
+          <circle cx="150" cy="12" r="3" fill="currentColor" />
+        </svg>
+      </div>
+    </section>
+
+    <!-- CARTA DESLIZANTE NO ENVELOPE -->
+    <section class="section-block">
+      <div class="letter-showcase reveal-on-scroll">
+        <div class="letter-card">
+          <p class="letter-quote">
+            “Assim, eles já não são dois, mas sim uma só carne. Portanto, o que Deus uniu, ninguém separe.”
+          </p>
+          <span class="letter-verse-ref">Mateus 19:6</span>
+        </div>
+        <div class="letter-pocket">
+          <div class="mini-seal-badge">E&amp;W</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTAGEM REGRESSIVA -->
+    <section class="section-block reveal-on-scroll">
+      <div class="section-header">
+        <span class="section-tag">Falta pouco</span>
+        <h2 class="section-title">Contagem Regressiva</h2>
+        <div class="divider-line"></div>
+      </div>
+
+      <div class="countdown-grid" id="countdown">
+        <div class="count-box">
+          <span class="count-num" id="cd-days">000</span>
+          <span class="count-label">Dias</span>
+        </div>
+        <div class="count-box">
+          <span class="count-num" id="cd-hours">00</span>
+          <span class="count-label">Horas</span>
+        </div>
+        <div class="count-box">
+          <span class="count-num" id="cd-minutes">00</span>
+          <span class="count-label">Minutos</span>
+        </div>
+        <div class="count-box">
+          <span class="count-num" id="cd-seconds">00</span>
+          <span class="count-label">Segundos</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROGRAMAÇÃO / LINHA DO TEMPO COM PÉROLA -->
+    <section class="section-block reveal-on-scroll">
+      <div class="section-header">
+        <span class="section-tag">Roteiro da Celebração</span>
+        <h2 class="section-title">Programação</h2>
+        <div class="divider-line"></div>
+      </div>
+
+      <div class="timeline-container">
+        <div class="timeline-pearl" aria-hidden="true"></div>
+        <div class="timeline-track">
+          <div class="timeline-item">
+            <div class="tl-time">16h00</div>
+            <div class="tl-dot"></div>
+            <div class="tl-content">
+              <h4>Recepção</h4>
+              <p>Chegada dos convidados e boas-vindas</p>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="tl-time">16h30</div>
+            <div class="tl-dot"></div>
+            <div class="tl-content">
+              <h4>Cerimônia</h4>
+              <p>Bênção e troca de alianças</p>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="tl-time">18h00</div>
+            <div class="tl-dot"></div>
+            <div class="tl-content">
+              <h4>Coquetel &amp; Fotos</h4>
+              <p>Registro especial com familiares e amigos</p>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="tl-time">19h30</div>
+            <div class="tl-dot"></div>
+            <div class="tl-content">
+              <h4>Jantar &amp; Brinde</h4>
+              <p>Recepção festiva no salão principal</p>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="tl-time">21h00</div>
+            <div class="tl-dot"></div>
+            <div class="tl-content">
+              <h4>Festa</h4>
+              <p>Abertura da pista e celebração</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LOCAL DO EVENTO -->
+    <section class="section-block reveal-on-scroll">
+      <div class="section-header">
+        <span class="section-tag">Onde vamos celebrar</span>
+        <h2 class="section-title">Local do Casamento</h2>
+        <div class="divider-line"></div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-icon" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M12 21s-6-5.686-6-10a6 6 0 1 1 12 0c0 4.314-6 10-6 10z"/>
+            <circle cx="12" cy="11" r="2.5"/>
+          </svg>
+        </div>
+        <h3>Espaço Perfeito — Mooca</h3>
+        <p>
+          Mooca, São Paulo — SP<br />
+          Sugerimos chegar com 20 minutos de antecedência para se acomodar com tranquilidade.
+        </p>
+        <div class="btn-group">
+          <a
+            href="https://www.google.com/maps/search/?api=1&query=Espa%C3%A7o+Perfeito+Mooca+S%C3%A3o+Paulo"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn-gold"
+          >
+            Abrir no Google Maps
+          </a>
+          <a
+            href="https://waze.com/ul?q=Espa%C3%A7o%20Perfeito%20Mooca%20S%C3%A3o%20Paulo"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn-outline"
+          >
+            Abrir no Waze
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- LISTA DE PRESENTES -->
+    <section class="section-block reveal-on-scroll">
+      <div class="section-header">
+        <span class="section-tag">Carinho aos Noivos</span>
+        <h2 class="section-title">Lista de Presentes</h2>
+        <div class="divider-line"></div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-icon" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <polyline points="20 12 20 22 4 22 4 12"/>
+            <rect x="2" y="7" width="20" height="5"/>
+            <line x1="12" y1="22" x2="12" y2="7"/>
+            <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/>
+            <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/>
+          </svg>
+        </div>
+        <h3>Nosso Novo Lar</h3>
+        <p>
+          Sua presença é o nosso maior presente! Mas, se desejar nos abençoar com um mimo para a nossa casa nova, preparamos uma lista especial.
+        </p>
+        <div class="btn-group">
+          <a id="gift-list-link" href="https://listadepresentes.exemplo.com.br/ester-e-wilk" target="_blank" rel="noopener noreferrer" class="btn-gold">
+            Acessar Lista de Presentes
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- FORMULÁRIO RSVP -->
+    <section class="section-block reveal-on-scroll" id="rsvp-section">
+      <div class="section-header">
+        <span class="section-tag">Sua presença importa</span>
+        <h2 class="section-title">Confirmação de Presença</h2>
+        <div class="divider-line"></div>
+      </div>
+
+      <div class="info-card">
+        <form id="rsvp-form" class="rsvp-form">
+          <div class="form-group">
+            <label for="guest-name">Nome Completo *</label>
+            <input type="text" id="guest-name" name="nome" class="form-control" placeholder="Digite seu nome completo" required />
+          </div>
+
+          <div class="form-group">
+            <label for="guest-phone">WhatsApp com DDD *</label>
+            <input type="tel" id="guest-phone" name="whatsapp" class="form-control" placeholder="(11) 99999-9999" required />
+          </div>
+
+          <div class="form-group">
+            <label for="guest-status">Você poderá comparecer? *</label>
+            <select id="guest-status" name="presenca" class="form-control" required>
+              <option value="Sim">Sim, com certeza estarei lá!</option>
+              <option value="Não">Infelizmente não poderei comparecer</option>
+            </select>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="adults-count">Adultos (com você)</label>
+              <input type="number" id="adults-count" name="adultos" class="form-control" min="1" max="10" value="1" required />
+            </div>
+            <div class="form-group">
+              <label for="kids-count">Crianças</label>
+              <input type="number" id="kids-count" name="criancas" class="form-control" min="0" max="10" value="0" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="guest-notes">Acompanhantes ou Mensagem aos Noivos</label>
+            <textarea id="guest-notes" name="observacoes" rows="3" class="form-control" placeholder="Nomes dos acompanhantes ou recado especial..."></textarea>
+          </div>
+
+          <button type="submit" class="btn-gold" id="submit-rsvp-btn" style="width: 100%; margin-top: 4px;">
+            Enviar Confirmação
+          </button>
+
+          <div id="rsvp-feedback" class="rsvp-feedback"></div>
+        </form>
+      </div>
+    </section>
+
+    <footer>
+      <strong>Ester &amp; Wilk</strong>
+      06 de Setembro de 2027 • Espaço Perfeito — Mooca
+    </footer>
+  </main>
+
+  <!-- MODAL DE CONFIRMAÇÃO ANTES DE ENVIAR RSVP -->
+  <div class="modal-backdrop" id="confirm-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-box">
+      <h4 id="modal-title">Confirmar resposta?</h4>
+      <p id="modal-summary">Deseja enviar sua confirmação de presença para Ester &amp; Wilk?</p>
+      <div class="btn-group">
+        <button type="button" class="btn-outline" id="cancel-modal-btn">Revisar</button>
+        <button type="button" class="btn-gold" id="confirm-send-btn">Confirmar</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* =========================================================================
+       CONFIGURAÇÕES RÁPIDAS (EDITE AQUI QUANDO TIVER OS LINKS FINAIS)
+       ========================================================================= */
+    const CONFIG = {
+      // Data oficial do casamento (Horário de Brasília -03:00)
+      weddingDateISO: '2027-09-06T16:00:00-03:00',
+
+      // Substitua pelo link real da lista de presentes quando estiver pronto
+      giftListURL: 'https://listadepresentes.exemplo.com.br/ester-e-wilk',
+
+      // Cole aqui a URL do seu Web App do Google Apps Script para gravar na planilha
+      googleAppsScriptURL: ''
+    };
+
+    /* =========================================================================
+       1. AUTO-DETECÇÃO DA IMAGEM DO ENVELOPE (envelope.webp / .jpg / .png)
+       ========================================================================= */
+    (function resolveEnvelopeImage() {
+      const candidates = ['envelope.webp', 'envelope.jpg', 'envelope.jpeg', 'envelope.png'];
+      let index = 0;
+
+      function tryNext() {
+        if (index >= candidates.length) return;
+        const img = new Image();
+        const current = candidates[index++];
+        img.onload = () => {
+          document.documentElement.style.setProperty('--envelope-img', `url('${current}')`);
+        };
+        img.onerror = tryNext;
+        img.src = current;
+      }
+      tryNext();
+    })();
+
+    // Atualiza link da lista de presentes
+    const giftLinkEl = document.getElementById('gift-list-link');
+    if (giftLinkEl && CONFIG.giftListURL) {
+      giftLinkEl.href = CONFIG.giftListURL;
+    }
+
+    /* =========================================================================
+       2. PARTÍCULAS DOURADAS + ABERTURA 3D DO ENVELOPE
+       ========================================================================= */
+    const envelopeStage = document.getElementById('envelope-stage');
+    const waxSealBtn = document.getElementById('wax-seal-btn');
+    const replayBtn = document.getElementById('replay-envelope-btn');
+    const canvas = document.getElementById('particles-canvas');
+    const ctx = canvas.getContext('2d');
+
+    let particles = [];
+    let animFrameId = null;
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    function spawnGoldParticles(originX, originY) {
+      particles = [];
+      const colors = ['#ffd966', '#f3d47c', '#fff4cc', '#d4af37', '#e6c36a'];
+      for (let i = 0; i < 65; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = 1.4 + Math.random() * 4.5;
+        particles.push({
+          x: originX,
+          y: originY,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed - 1.2,
+          size: 1.8 + Math.random() * 3.4,
+          alpha: 1,
+          decay: 0.011 + Math.random() * 0.014,
+          color: colors[Math.floor(Math.random() * colors.length)]
+        });
+      }
+
+      if (animFrameId) cancelAnimationFrame(animFrameId);
+      function animateParticles() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach((p) => {
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += 0.035; // gravidade suave
+          p.alpha -= p.decay;
+          if (p.alpha > 0) {
+            ctx.save();
+            ctx.globalAlpha = p.alpha;
+            ctx.fillStyle = p.color;
+            ctx.shadowBlur = 8;
+            ctx.shadowColor = '#ffd966';
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+          }
+        });
+        particles = particles.filter((p) => p.alpha > 0);
+        if (particles.length > 0) {
+          animFrameId = requestAnimationFrame(animateParticles);
+        }
+      }
+      animateParticles();
+    }
+
+    waxSealBtn.addEventListener('click', () => {
+      if (envelopeStage.classList.contains('opening')) return;
+
+      const rect = waxSealBtn.getBoundingClientRect();
+      spawnGoldParticles(rect.left + rect.width / 2, rect.top + rect.height / 2);
+
+      envelopeStage.classList.add('opening');
+
+      // Após a aba superior girar e o brilho dourado aparecer, revela o convite
+      setTimeout(() => {
+        envelopeStage.classList.add('fade-out');
+        document.body.classList.remove('envelope-locked');
+      }, 1550);
+    });
+
+    replayBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'instant' });
+      envelopeStage.classList.remove('opening', 'fade-out');
+      document.body.classList.add('envelope-locked');
+    });
+
+    /* =========================================================================
+       3. CONTAGEM REGRESSIVA AO VIVO
+       ========================================================================= */
+    const targetTimestamp = new Date(CONFIG.weddingDateISO).getTime();
+
+    function updateCountdown() {
+      const now = Date.now();
+      const diff = Math.max(0, targetTimestamp - now);
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((diff / (1000 * 60)) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+
+      document.getElementById('cd-days').textContent = String(days).padStart(3, '0');
+      document.getElementById('cd-hours').textContent = String(hours).padStart(2, '0');
+      document.getElementById('cd-minutes').textContent = String(minutes).padStart(2, '0');
+      document.getElementById('cd-seconds').textContent = String(seconds).padStart(2, '0');
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+
+    /* =========================================================================
+       4. ANIMAÇÃO DE REVELAÇÃO AO ROLAR A PÁGINA
+       ========================================================================= */
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      },
+      { threshold: 0.16 }
+    );
+
+    document.querySelectorAll('.reveal-on-scroll').forEach((el) => observer.observe(el));
+
+    /* =========================================================================
+       5. FORMULÁRIO RSVP COM MODAL DE CONFIRMAÇÃO + GOOGLE APPS SCRIPT
+       ========================================================================= */
+    const rsvpForm = document.getElementById('rsvp-form');
+    const confirmModal = document.getElementById('confirm-modal');
+    const modalSummary = document.getElementById('modal-summary');
+    const cancelModalBtn = document.getElementById('cancel-modal-btn');
+    const confirmSendBtn = document.getElementById('confirm-send-btn');
+    const feedbackEl = document.getElementById('rsvp-feedback');
+
+    let pendingFormData = null;
+
+    rsvpForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const formData = new FormData(rsvpForm);
+      pendingFormData = Object.fromEntries(formData.entries());
+
+      const statusText = pendingFormData.presenca === 'Sim'
+        ? `Confirmar presença (${pendingFormData.adultos} adulto(s) e ${pendingFormData.criancas || 0} criança(s))`
+        : 'Informar que não poderá comparecer';
+
+      modalSummary.textContent = `${pendingFormData.nome}: ${statusText}?`;
+      confirmModal.classList.add('active');
+    });
+
+    cancelModalBtn.addEventListener('click', () => {
+      confirmModal.classList.remove('active');
+    });
+
+    confirmSendBtn.addEventListener('click', async () => {
+      confirmModal.classList.remove('active');
+      if (!pendingFormData) return;
+
+      const submitBtn = document.getElementById('submit-rsvp-btn');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Enviando...';
+      feedbackEl.className = 'rsvp-feedback';
+      feedbackEl.style.display = 'none';
+
+      try {
+        if (CONFIG.googleAppsScriptURL) {
+          await fetch(CONFIG.googleAppsScriptURL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              ...pendingFormData,
+              timestamp: new Date().toISOString()
+            })
+          });
+        } else {
+          // Simula resposta imediata enquanto a URL da planilha não é configurada
+          await new Promise((r) => setTimeout(r, 500));
+        }
+
+        feedbackEl.textContent = 'Confirmação registrada com carinho! Obrigado por responder.';
+        feedbackEl.classList.add('success');
+        rsvpForm.reset();
+      } catch (err) {
+        feedbackEl.textContent = 'Não foi possível enviar agora. Tente novamente em instantes.';
+        feedbackEl.classList.add('error');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Enviar Confirmação';
+      }
+    });
+  </script>
+</body>
+</html>
